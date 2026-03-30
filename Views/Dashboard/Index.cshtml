@@ -1,0 +1,29 @@
+@{
+    ViewData["Title"] = "الرئيسية";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px;">
+    <div class="card" style="border-right: 4px solid var(--gold);">
+        <h3 style="margin:0 0 10px; color:var(--text-soft); font-size:1rem;">إجمالي الطلاب</h3>
+        <div style="font-size: 2.2rem; font-weight: 900; color: var(--gold);">@ViewBag.TotalStudents</div>
+    </div>
+    
+    <div class="card" style="border-right: 4px solid #4CAF50;">
+        <h3 style="margin:0 0 10px; color:var(--text-soft); font-size:1rem;">الحلقات القرآنية</h3>
+        <div style="font-size: 2.2rem; font-weight: 900; color: #4CAF50;">@ViewBag.TotalHalaqas</div>
+    </div>
+    
+    <div class="card" style="border-right: 4px solid #2196F3;">
+        <h3 style="margin:0 0 10px; color:var(--text-soft); font-size:1rem;">المعلمون</h3>
+        <div style="font-size: 2.2rem; font-weight: 900; color: #2196F3;">@ViewBag.TotalTeachers</div>
+    </div>
+</div>
+
+<div class="card" style="margin-top: 24px;">
+    <h3 style="margin:0 0 20px; color:var(--gold);">مرحباً بك في لوحة الإدارة</h3>
+    <p style="color:var(--text-soft); line-height: 1.8;">
+        من خلال هذه اللوحة يمكنك إدارة شؤون الطلاب، الحلقات، ومتابعة الحفظ والحضور.<br>
+        استخدم القائمة الجانبية للوصول إلى أقسام النظام.
+    </p>
+</div>

@@ -1,0 +1,27 @@
+@{
+    ViewData["Title"] = "إضافة معلم جديد";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="card" style="max-width: 600px; margin: 0 auto;">
+    <h3 style="margin: 0 0 24px; color: var(--gold); border-bottom: 2px solid var(--gold-pale); padding-bottom: 12px;">بيانات المعلم</h3>
+
+    @Html.ValidationSummary(true, "", new { style="color:red; margin-bottom:15px; font-weight:bold;" })
+
+    <form method="post" action="/Dashboard/AddTeacher">
+        <div style="margin-bottom: 20px;">
+            <label class="form-label" for="Name">الاسم الرباعي</label>
+            <input type="text" class="form-control" id="Name" name="Name" placeholder="أدخل اسم المعلم..." required />
+        </div>
+
+        <div style="margin-bottom: 24px;">
+            <label class="form-label" for="PhoneNumber">رقم الجوال (اختياري)</label>
+            <input type="tel" class="form-control" id="PhoneNumber" name="PhoneNumber" placeholder="05XXXXXXXX" dir="ltr" style="text-align: right;" />
+        </div>
+
+        <div style="display:flex; justify-content: flex-end; gap:10px;">
+            <a href="/Dashboard/Teachers" class="btn" style="background:#f44336; box-shadow:none;">إلغاء</a>
+            <button type="submit" class="btn">💾 حفظ المعلم</button>
+        </div>
+    </form>
+</div>

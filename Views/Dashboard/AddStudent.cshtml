@@ -1,0 +1,53 @@
+@{
+    ViewData["Title"] = "إضافة طالب جديد";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var halaqas = ViewBag.Halaqas as IEnumerable<ElMaherQuranSchool.Models.Halaqa>;
+}
+
+<div class="card" style="max-width: 600px; margin: 0 auto;">
+    <h3 style="margin: 0 0 24px; color: var(--gold); border-bottom: 2px solid var(--gold-pale); padding-bottom: 12px;">بيانات الطالب</h3>
+
+    @Html.ValidationSummary(true, "", new { style="color:red; margin-bottom:15px; font-weight:bold;" })
+
+    <form method="post" action="/Dashboard/AddStudent" enctype="multipart/form-data">
+        <div style="margin-bottom: 20px;">
+            <label class="form-label" for="Name">الاسم الرباعي</label>
+            <input type="text" class="form-control" id="Name" name="Name" placeholder="أدخل اسم الطالب..." required />
+        </div>
+
+        <div style="margin-bottom: 20px;">
+            <label class="form-label" for="profileImage">صورة الطالب (اختياري)</label>
+            <input type="file" class="form-control" id="profileImage" name="profileImage" accept="image/*" />
+        </div>
+
+        <div style="margin-bottom: 20px;">
+            <label class="form-label" for="ParentPhone">رقم هاتف ولي الأمر (لرؤية تقدم الطالب)</label>
+            <input type="tel" class="form-control" id="ParentPhone" name="ParentPhone" placeholder="05XXXXXXXX" dir="ltr" style="text-align: right;" />
+        </div>
+
+        <div style="margin-bottom: 24px;">
+            <label class="form-label" for="HalaqaId">تعيين في حلقة (اختياري)</label>
+            <select class="form-control" id="HalaqaId" name="HalaqaId">
+                <option value="">-- اختر حلقة --</option>
+                @if (halaqas != null)
+                {
+                    foreach (var h in halaqas)
+                    {
+                        <option value="@h.Id">@h.Name</option>
+                    }
+                }
+            </select>
+            <p style="font-size: .8rem; color: var(--text-soft); margin-top: 6px;">ملاحظة: سيتم تعيين رقم تسلسلي تلقائياً يبدأ من 1.</p>
+        </div>
+
+        <div style="margin-bottom: 24px;">
+            <label class="form-label" for="TotalMemorizedPages">إجمالي الأوجه المحفوظة قبل الانضمام</label>
+            <input type="number" class="form-control" id="TotalMemorizedPages" name="TotalMemorizedPages" value="0" min="0" required />
+        </div>
+
+        <div style="display:flex; justify-content: flex-end; gap:10px;">
+            <a href="/Dashboard/Students" class="btn" style="background:#f44336; box-shadow:none;">إلغاء</a>
+            <button type="submit" class="btn">💾 حفظ الطالب</button>
+        </div>
+    </form>
+</div>

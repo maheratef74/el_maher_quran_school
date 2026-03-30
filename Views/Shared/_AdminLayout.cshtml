@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - لوحة الإدارة</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #b8962e; --gold-light: #d6b759; --gold-pale: #f5eed3;
+            --beige: #fefcf7; --beige-dark: #f0e9d6;
+            --text-dark: #2c2416; --text-soft: #635b4c; --white: #ffffff;
+            --sidebar-width: 250px;
+        }
+        body { margin: 0; padding: 0; font-family: 'Tajawal', sans-serif; background: #fdfbf7; color: var(--text-dark); display: flex; min-height: 100vh; }
+        .sidebar { width: var(--sidebar-width); background: var(--white); box-shadow: 2px 0 20px rgba(44,36,22,0.05); display: flex; flex-direction: column; position: fixed; top: 0; bottom: 0; right: 0; z-index: 100; }
+        .sidebar-header { padding: 24px; text-align: center; border-bottom: 1px solid var(--beige-dark); margin-bottom: 20px; }
+        .sidebar-header h2 { margin: 0; color: var(--gold); font-size: 1.3rem; font-weight: 900; }
+        .nav-link { display: flex; align-items: center; padding: 14px 24px; color: var(--text-soft); font-weight: 700; text-decoration: none; font-size: .95rem; border-left: 4px solid transparent; transition: .2s; }
+        .nav-link:hover { background: var(--beige); color: var(--gold); border-left-color: var(--gold-light); }
+        .nav-link.active { background: var(--gold-pale); color: var(--gold); border-left-color: var(--gold); }
+        .nav-link i { margin-left: 10px; font-style: normal; font-size: 1.2rem; }
+        .main-content { margin-right: var(--sidebar-width); flex: 1; display: flex; flex-direction: column; min-width: 0; }
+        .topbar { background: var(--white); height: 70px; display: flex; align-items: center; justify-content: space-between; padding: 0 40px; box-shadow: 0 2px 10px rgba(44,36,22,0.02); }
+        .page-title { margin: 0; font-size: 1.2rem; font-weight: 800; }
+        .user-menu a { color: #f44336; font-weight: 700; text-decoration: none; background: #ffebee; padding: 6px 16px; border-radius: 50px; font-size: .85rem; }
+        .user-menu a:hover { background: #ffcdd2; }
+        .content-area { padding: 40px; }
+        /* Cards & Tables */
+        .card { background: #fff; border-radius: 12px; padding: 24px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); border: 1px solid var(--beige-dark); margin-bottom: 24px;}
+        .table-responsive { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; text-align: right; }
+        th { background: var(--beige); color: var(--text-soft); padding: 12px 16px; font-weight: 700; border-bottom: 2px solid var(--beige-dark); }
+        td { padding: 14px 16px; border-bottom: 1px solid var(--beige-dark); font-weight: 500; }
+        tr:hover td { background: #faf9f5; }
+        .btn { display: inline-block; padding: 10px 20px; background: linear-gradient(135deg, var(--gold), var(--gold-light)); color: #fff; text-decoration: none; border-radius: 8px; font-weight: 700; border: none; cursor: pointer; transition: .2s; }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(184,150,46,0.25); }
+        .form-label { display: block; font-weight: 700; margin-bottom: 8px; color: var(--text-dark); }
+        .form-control { width: 100%; padding: 12px 16px; border: 2px solid var(--beige-dark); border-radius: 8px; font-family: 'Tajawal', sans-serif; margin-bottom: 16px; box-sizing: border-box; }
+        .form-control:focus { border-color: var(--gold); outline: none; }
+        /* Responsive */
+        @@media(max-width: 768px){
+            .sidebar { transform: translateX(100%); transition: .3s; }
+            .sidebar.show { transform: translateX(0); }
+            .main-content { margin-right: 0; }
+            .content-area { padding: 20px; }
+            .mobile-toggle { display: block!important; background:none; border:none; font-size:1.5rem; cursor:pointer;}
+        }
+        .mobile-toggle { display: none; }
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h2>📖 الماهر</h2>
+            <div style="font-size:.8rem;color:var(--text-soft);">لوحة الإدارة</div>
+        </div>
+        <a href="/Dashboard" class="nav-link @(ViewContext.RouteData.Values["Action"]?.ToString() == "Index" ? "active" : "")">
+            <i>📊</i> الرئيسية
+        </a>
+        <a href="/Dashboard/Students" class="nav-link @(ViewContext.RouteData.Values["Action"]?.ToString() == "Students" ? "active" : "")">
+            <i>👨‍🎓</i> الطلاب
+        </a>
+        <a href="/Dashboard/AddStudent" class="nav-link @(ViewContext.RouteData.Values["Action"]?.ToString() == "AddStudent" ? "active" : "")">
+            <i>➕</i> إضافة طالب
+        </a>
+        <a href="/Dashboard/Halaqas" class="nav-link @(ViewContext.RouteData.Values["Action"]?.ToString() == "Halaqas" ? "active" : "")">
+            <i>🕌</i> الحلقات
+        </a>
+        <a href="/Dashboard/AddHalaqa" class="nav-link @(ViewContext.RouteData.Values["Action"]?.ToString() == "AddHalaqa" ? "active" : "")">
+            <i>➕</i> إضافة حلقة
+        </a>
+        <a href="/Dashboard/Teachers" class="nav-link @(ViewContext.RouteData.Values["Action"]?.ToString() == "Teachers" ? "active" : "")">
+            <i>👨‍🏫</i> المعلمون
+        </a>
+        <a href="/Dashboard/AddTeacher" class="nav-link @(ViewContext.RouteData.Values["Action"]?.ToString() == "AddTeacher" ? "active" : "")">
+            <i>➕</i> إضافة معلم
+        </a>
+    </aside>
+
+    <main class="main-content">
+        <header class="topbar">
+            <div style="display:flex;align-items:center;gap:15px;">
+                <button class="mobile-toggle" onclick="document.getElementById('sidebar').classList.toggle('show')">☰</button>
+                <h1 class="page-title">@ViewData["Title"]</h1>
+            </div>
+            <div class="user-menu">
+                <a href="/Auth/Logout">🚪 تسجيل الخروج</a>
+            </div>
+        </header>
+
+        <div class="content-area">
+            @RenderBody()
+        </div>
+    </main>
+
+</body>
+</html>

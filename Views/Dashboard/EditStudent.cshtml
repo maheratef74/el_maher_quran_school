@@ -1,0 +1,68 @@
+@model ElMaherQuranSchool.Models.Student
+@{
+    ViewData["Title"] = "تعديل بيانات الطالب";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var halaqas = ViewBag.Halaqas as IEnumerable<ElMaherQuranSchool.Models.Halaqa>;
+}
+
+<div class="card" style="max-width: 600px; margin: 0 auto;">
+    <h3 style="margin: 0 0 24px; color: var(--gold); border-bottom: 2px solid var(--gold-pale); padding-bottom: 12px;">تعديل بيانات الطالب: @Model.SerialNumber</h3>
+
+    @Html.ValidationSummary(true, "", new { style="color:red; margin-bottom:15px; font-weight:bold;" })
+
+    <form method="post" action="/Dashboard/EditStudent/@Model.Id" enctype="multipart/form-data">
+        <input type="hidden" name="id" value="@Model.Id" />
+
+        <div style="margin-bottom: 20px;">
+            <label class="form-label" for="Name">الاسم الرباعي</label>
+            <input type="text" class="form-control" id="Name" name="Name" value="@Model.Name" required />
+        </div>
+
+        <div style="margin-bottom: 20px;">
+            <label class="form-label" for="profileImage">تغيير الصورة الشخصية</label>
+            @if (!string.IsNullOrEmpty(Model.ProfileImageUrl))
+            {
+                <div style="margin-bottom: 10px;">
+                    <img src="@Model.ProfileImageUrl" alt="الصورة الحالية" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 2px solid var(--gold);" />
+                </div>
+            }
+            <input type="file" class="form-control" id="profileImage" name="profileImage" accept="image/*" />
+        </div>
+
+        <div style="margin-bottom: 20px;">
+            <label class="form-label" for="ParentPhone">رقم هاتف ولي الأمر</label>
+            <input type="tel" class="form-control" id="ParentPhone" name="ParentPhone" value="@Model.ParentPhone" dir="ltr" style="text-align: right;" />
+        </div>
+
+        <div style="margin-bottom: 20px;">
+            <label class="form-label" for="HalaqaId">تغيير الحلقة</label>
+            <select class="form-control" id="HalaqaId" name="HalaqaId">
+                <option value="">-- بدون حلقة --</option>
+                @if (halaqas != null)
+                {
+                    foreach (var h in halaqas)
+                    {
+                        if (Model.HalaqaId == h.Id)
+                        {
+                            <option value="@h.Id" selected>@h.Name</option>
+                        }
+                        else
+                        {
+                            <option value="@h.Id">@h.Name</option>
+                        }
+                    }
+                }
+            </select>
+        </div>
+
+        <div style="margin-bottom: 24px;">
+            <label class="form-label" for="TotalMemorizedPages">إجمالي الأوجه المحفوظة</label>
+            <input type="number" class="form-control" id="TotalMemorizedPages" name="TotalMemorizedPages" value="@Model.TotalMemorizedPages" min="0" required />
+        </div>
+
+        <div style="display:flex; justify-content: flex-end; gap:10px;">
+            <a href="/Dashboard/Students" class="btn" style="background:#f44336; box-shadow:none;">إلغاء</a>
+            <button type="submit" class="btn">💾 حفظ التعديلات</button>
+        </div>
+    </form>
+</div>

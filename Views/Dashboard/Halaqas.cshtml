@@ -1,0 +1,54 @@
+@model IEnumerable<ElMaherQuranSchool.Models.Halaqa>
+@{
+    ViewData["Title"] = "الحلقات";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="card">
+    <div style="display:flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap:wrap; gap:10px;">
+        <h3 style="margin: 0; color: var(--gold);">قائمة الحلقات القرآنية</h3>
+        <a href="/Dashboard/AddHalaqa" class="btn">➕ إضافة حلقة</a>
+    </div>
+
+    <div class="table-responsive">
+        <table>
+            <thead>
+                <tr>
+                    <th>اسم الحلقة</th>
+                    <th>الوصف</th>
+                    <th>المعلم</th>
+                    <th>المواعيد</th>
+                    <th>تاريخ الإنشاء</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var halaqa in Model)
+                {
+                    <tr>
+                        <td style="font-weight:bold; color:var(--gold);">@halaqa.Name</td>
+                        <td>@(string.IsNullOrEmpty(halaqa.Description) ? "-" : halaqa.Description)</td>
+                        <td>
+                            @if(halaqa.Teacher != null) 
+                            { 
+                                <span style="background:var(--beige-dark); padding:4px 10px; border-radius:50px; font-size:.85rem; font-weight:bold;">@halaqa.Teacher.Name</span> 
+                            } 
+                            else 
+                            { 
+                                <span style="color:var(--text-soft);">بدون معلم</span> 
+                            }
+                        </td>
+                        <td>@(string.IsNullOrEmpty(halaqa.Schedule) ? "-" : halaqa.Schedule)</td>
+                        <td style="font-size: .9rem;">@halaqa.CreatedAt.ToString("yyyy/MM/dd")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        
+        @if(!Model.Any())
+        {
+            <div style="text-align:center; padding: 40px 20px; color:var(--text-soft);">
+                لا يوجد حلقات مسجلة حالياً.
+            </div>
+        }
+    </div>
+</div>

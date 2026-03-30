@@ -1,0 +1,41 @@
+@model IEnumerable<ElMaherQuranSchool.Models.Teacher>
+@{
+    ViewData["Title"] = "المعلمون";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="card">
+    <div style="display:flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap:wrap; gap:10px;">
+        <h3 style="margin: 0; color: var(--gold);">قائمة المعلمين</h3>
+        <a href="/Dashboard/AddTeacher" class="btn">➕ إضافة معلم</a>
+    </div>
+
+    <div class="table-responsive">
+        <table>
+            <thead>
+                <tr>
+                    <th>اسم المعلم</th>
+                    <th>رقم الجوال</th>
+                    <th>تاريخ التسجيل</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var teacher in Model)
+                {
+                    <tr>
+                        <td style="font-weight:bold; color:var(--text-dark);">@teacher.Name</td>
+                        <td style="direction: ltr; text-align: right;">@(string.IsNullOrEmpty(teacher.PhoneNumber) ? "-" : teacher.PhoneNumber)</td>
+                        <td style="font-size: .9rem;">@teacher.CreatedAt.ToString("yyyy/MM/dd")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        
+        @if(!Model.Any())
+        {
+            <div style="text-align:center; padding: 40px 20px; color:var(--text-soft);">
+                لا يوجد معلمون مسجلون حالياً.
+            </div>
+        }
+    </div>
+</div>

@@ -1,0 +1,82 @@
+@{
+    ViewData["Title"] = "تسجيل الدخول - الإدارة";
+    Layout = null; // No layout or use a simple one
+}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - الماهر بالقرآن</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #b8962e;
+            --gold-light: #d6b759;
+            --gold-pale: #f5eed3;
+            --beige: #fefcf7;
+            --beige-dark: #f0e9d6;
+            --text-dark: #2c2416;
+            --text-soft: #635b4c;
+            --white: #ffffff;
+        }
+        body {
+            margin: 0; padding: 0;
+            font-family: 'Tajawal', sans-serif;
+            background: linear-gradient(135deg, var(--beige-dark), var(--beige));
+            height: 100vh; display: flex; align-items: center; justify-content: center;
+        }
+        .login-box {
+            background: var(--white);
+            padding: 40px; border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(44, 36, 22, 0.15);
+            width: 100%; max-width: 400px;
+            text-align: center;
+        }
+        .login-logo { font-size: 3rem; margin-bottom: 10px; }
+        .login-title { font-size: 1.5rem; font-weight: 800; color: var(--gold); margin-bottom: 24px; }
+        .form-group { text-align: right; margin-bottom: 20px; }
+        .form-group label { display: block; font-weight: 700; color: var(--text-dark); margin-bottom: 8px; }
+        .form-group input { 
+            width: 100%; padding: 12px 16px; border: 2px solid var(--beige-dark); 
+            border-radius: 8px; font-family: 'Tajawal', sans-serif; 
+            box-sizing: border-box; transition: 0.3s;
+        }
+        .form-group input:focus { border-color: var(--gold); outline: none; }
+        .btn-login {
+            background: linear-gradient(135deg, var(--gold), var(--gold-light));
+            color: #fff; width: 100%; padding: 14px; border: none; border-radius: 8px;
+            font-size: 1.1rem; font-weight: 800; font-family: 'Tajawal', sans-serif;
+            cursor: pointer; transition: 0.3s;
+        }
+        .btn-login:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(184, 150, 46, 0.3); }
+        .error-msg { background: #ffebee; color: #c62828; padding: 10px; border-radius: 8px; margin-bottom: 20px; font-size: 0.9rem; font-weight: 700; }
+        .back-link { display: inline-block; margin-top: 20px; color: var(--text-soft); text-decoration: none; font-size: 0.9rem; font-weight: 600; }
+        .back-link:hover { color: var(--gold); }
+    </style>
+</head>
+<body>
+    <div class="login-box">
+        <div class="login-logo">📖</div>
+        <div class="login-title">إدارة مدرسة الماهر</div>
+        
+        @if (ViewBag.Error != null)
+        {
+            <div class="error-msg">@ViewBag.Error</div>
+        }
+
+        <form method="post" action="/Auth/Login">
+            <div class="form-group">
+                <label>البريد الإلكتروني</label>
+                <input type="email" name="email" id="email" required placeholder="admin@quran.school" dir="ltr" />
+            </div>
+            <div class="form-group">
+                <label>كلمة المرور</label>
+                <input type="password" name="password" id="password" required dir="ltr" />
+            </div>
+            <button type="submit" class="btn-login">دخول</button>
+        </form>
+        <a href="/" class="back-link">← العودة للموقع</a>
+    </div>
+</body>
+</html>

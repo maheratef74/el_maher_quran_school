@@ -1,0 +1,53 @@
+@{
+    ViewData["Title"] = "إضافة حلقة جديدة";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var teachers = ViewBag.Teachers as IEnumerable<ElMaherQuranSchool.Models.Teacher>;
+}
+
+<div class="card" style="max-width: 600px; margin: 0 auto;">
+    <h3 style="margin: 0 0 24px; color: var(--gold); border-bottom: 2px solid var(--gold-pale); padding-bottom: 12px;">بيانات الحلقة</h3>
+
+    @Html.ValidationSummary(true, "", new { style="color:red; margin-bottom:15px; font-weight:bold;" })
+
+    <form method="post" action="/Dashboard/AddHalaqa">
+        <div style="margin-bottom: 20px;">
+            <label class="form-label" for="Name">اسم الحلقة</label>
+            <input type="text" class="form-control" id="Name" name="Name" placeholder="مثال: حلقة النور، حلقة البراعم..." required />
+        </div>
+
+        <div style="margin-bottom: 20px;">
+            <label class="form-label" for="Description">الوصف (اختياري)</label>
+            <input type="text" class="form-control" id="Description" name="Description" placeholder="تفاصيل إضافية عن الحلقة..." />
+        </div>
+
+        <div style="margin-bottom: 20px;">
+            <label class="form-label" for="TargetPages">عدد الأوجه لإتمام الحلقة (الهدف التقريبي)</label>
+            <input type="number" class="form-control" id="TargetPages" name="TargetPages" value="100" min="1" required />
+            <small style="color:var(--text-light); font-size:12px; margin-top:5px; display:block;">سيتم استخدام هذا العدد لرسم نسبة إنجاز الطالب في ملفه العام</small>
+        </div>
+
+        <div style="margin-bottom: 20px;">
+            <label class="form-label" for="Schedule">المواعيد (اختياري)</label>
+            <input type="text" class="form-control" id="Schedule" name="Schedule" placeholder="مثال: الأحد والثلاثاء 4:00 إلى 6:00 م" />
+        </div>
+
+        <div style="margin-bottom: 24px;">
+            <label class="form-label" for="TeacherId">تعيين معلم (اختياري)</label>
+            <select class="form-control" id="TeacherId" name="TeacherId">
+                <option value="">-- اختر معلماً --</option>
+                @if (teachers != null)
+                {
+                    foreach (var t in teachers)
+                    {
+                        <option value="@t.Id">@t.Name</option>
+                    }
+                }
+            </select>
+        </div>
+
+        <div style="display:flex; justify-content: flex-end; gap:10px;">
+            <a href="/Dashboard/Halaqas" class="btn" style="background:#f44336; box-shadow:none;">إلغاء</a>
+            <button type="submit" class="btn">💾 حفظ الحلقة</button>
+        </div>
+    </form>
+</div>

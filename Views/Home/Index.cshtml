@@ -1,0 +1,1662 @@
+@{
+    ViewData["Title"] = "Home Page";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>مدرسة الماهر بالقرآن</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+:root{
+  --gold:#b8962e;
+  --gold-light:#d4af50;
+  --gold-pale:#f5e9c4;
+  --beige:#faf6ee;
+  --beige-dark:#f0e8d5;
+  --white:#ffffff;
+  --text-dark:#2c2416;
+  --text-mid:#5a4a30;
+  --text-soft:#8a7355;
+  --shadow:0 4px 24px rgba(184,150,46,.13);
+  --radius:16px;
+  --radius-sm:10px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Tajawal',sans-serif;background:var(--beige);color:var(--text-dark);direction:rtl;}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar{width:6px;}
+::-webkit-scrollbar-track{background:var(--beige-dark);}
+::-webkit-scrollbar-thumb{background:var(--gold-light);border-radius:3px;}
+
+/* ===== PATTERN BG ===== */
+.pattern-bg{
+  background-image:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23b8962e' fill-opacity='0.06'%3E%3Cpath d='M30 0l30 30-30 30L0 30z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* ===== HERO BG IMAGE ===== */
+#hero{
+  background-image:
+    linear-gradient(to bottom, rgba(255,252,245,0.85) 0%, rgba(250,246,238,0.7) 50%, rgba(250,246,238,0.95) 100%),
+    url('https://sedrahedu.com/wp-content/uploads/2024/07/%D9%85%D8%AF%D9%88%D9%86%D8%A9-%D8%AA%D8%B9%D9%84%D9%8A%D9%85-%D8%A7%D9%84%D8%B1%D8%B6%D9%8A%D8%B9-%D8%A7%D9%84%D9%82%D8%B1%D8%A2%D9%86-%D8%A8%D8%A7%D9%84%D8%B3%D9%85%D8%B93-02.webp');
+  background-size:cover;
+  background-position:center 30%;
+  background-attachment:fixed;
+}
+
+/* ===== NAVBAR ===== */
+#navbar{
+  position:fixed;top:0;right:0;left:0;z-index:1000;
+  background:rgba(255,252,245,.97);
+  backdrop-filter:blur(8px);
+  border-bottom:2px solid var(--gold-pale);
+  transition:box-shadow .3s;
+}
+#navbar.scrolled{box-shadow:0 2px 20px rgba(184,150,46,.18);}
+.nav-inner{
+  max-width:1400px;margin:0 auto;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 20px;height:64px;
+}
+.nav-logo{
+  display:flex;align-items:center;gap:10px;
+  font-size:1.1rem;font-weight:900;color:var(--gold);
+  text-decoration:none;white-space:nowrap;
+}
+.nav-logo .logo-icon{
+  width:42px;height:42px;background:linear-gradient(135deg,var(--gold),var(--gold-light));
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:1.3rem;color:#fff;flex-shrink:0;
+}
+.nav-links{
+  display:flex;align-items:center;gap:2px;flex-wrap:nowrap;
+  list-style:none;overflow-x:auto;
+}
+.nav-links a{
+  text-decoration:none;color:var(--text-mid);
+  font-size:.82rem;font-weight:500;
+  padding:6px 10px;border-radius:8px;
+  transition:all .25s;white-space:nowrap;
+}
+.nav-links a:hover,.nav-links a.active{
+  color:var(--gold);background:var(--gold-pale);
+}
+.hamburger{
+  display:none;background:none;border:none;
+  cursor:pointer;padding:6px;
+}
+.hamburger span{
+  display:block;width:24px;height:2px;background:var(--gold);
+  margin:5px 0;transition:.3s;border-radius:2px;
+}
+.mobile-menu{
+  display:none;
+  background:var(--white);
+  border-top:1px solid var(--gold-pale);
+  padding:10px 0;
+}
+.mobile-menu.open{display:block;}
+.mobile-menu a{
+  display:block;padding:12px 24px;
+  color:var(--text-mid);text-decoration:none;
+  font-size:.95rem;font-weight:500;
+  border-bottom:1px solid var(--gold-pale);
+  transition:.2s;
+}
+.mobile-menu a:hover{color:var(--gold);background:var(--gold-pale);}
+
+/* ===== HERO ===== */
+#hero{
+  min-height:100vh;
+  display:flex;align-items:center;justify-content:center;
+  padding:100px 20px 60px;
+  position:relative;overflow:hidden;
+}
+.hero-ornament{
+  position:absolute;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(184,150,46,.12),transparent 70%);
+}
+.hero-ornament-1{width:500px;height:500px;top:-100px;left:-100px;}
+.hero-ornament-2{width:400px;height:400px;bottom:-80px;right:-80px;}
+.hero-content{text-align:center;position:relative;z-index:1;max-width:800px;}
+.hero-badge{
+  display:inline-block;
+  background:var(--gold-pale);border:1.5px solid var(--gold-light);
+  color:var(--gold);border-radius:50px;
+  padding:6px 20px;font-size:.85rem;font-weight:700;
+  margin-bottom:24px;
+  animation:fadeDown .8s ease both;
+}
+.hero-title{
+  font-size:clamp(2rem,5vw,3.5rem);
+  font-weight:900;color:var(--text-dark);
+  line-height:1.3;margin-bottom:16px;
+  animation:fadeDown .9s ease .1s both;
+}
+.hero-title span{color:var(--gold);}
+.hero-subtitle{
+  font-size:clamp(.95rem,2vw,1.2rem);
+  color:var(--text-mid);line-height:1.8;
+  margin-bottom:36px;
+  animation:fadeDown 1s ease .2s both;
+}
+.hero-btns{
+  display:flex;gap:14px;justify-content:center;flex-wrap:wrap;
+  animation:fadeDown 1s ease .3s both;
+}
+.btn-gold{
+  background:linear-gradient(135deg,var(--gold),var(--gold-light));
+  color:#fff;border:none;border-radius:50px;
+  padding:14px 32px;font-size:1rem;font-weight:700;
+  font-family:'Tajawal',sans-serif;
+  cursor:pointer;transition:.3s;box-shadow:0 4px 18px rgba(184,150,46,.35);
+  text-decoration:none;display:inline-block;
+}
+.btn-gold:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(184,150,46,.45);}
+.btn-outline{
+  background:transparent;color:var(--gold);
+  border:2px solid var(--gold);border-radius:50px;
+  padding:13px 32px;font-size:1rem;font-weight:700;
+  font-family:'Tajawal',sans-serif;
+  cursor:pointer;transition:.3s;
+  text-decoration:none;display:inline-block;
+}
+.btn-outline:hover{background:var(--gold-pale);}
+
+/* ===== STATS ===== */
+.stats-bar{
+  background:linear-gradient(135deg,var(--gold),var(--gold-light));
+  padding:40px 20px;
+}
+.stats-inner{
+  max-width:900px;margin:0 auto;
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;
+}
+.stat-item{text-align:center;color:#fff;}
+.stat-num{font-size:2.5rem;font-weight:900;display:block;}
+.stat-label{font-size:.95rem;opacity:.9;margin-top:4px;}
+
+/* ===== SECTIONS ===== */
+section{padding:80px 20px;}
+.section-inner{max-width:1100px;margin:0 auto;}
+.section-header{text-align:center;margin-bottom:50px;}
+.section-tag{
+  display:inline-block;
+  background:var(--gold-pale);color:var(--gold);
+  border-radius:50px;padding:4px 18px;
+  font-size:.82rem;font-weight:700;margin-bottom:14px;
+}
+.section-title{
+  font-size:clamp(1.5rem,3vw,2.2rem);
+  font-weight:900;color:var(--text-dark);margin-bottom:12px;
+}
+.section-line{
+  width:60px;height:3px;
+  background:linear-gradient(90deg,var(--gold),var(--gold-light));
+  border-radius:2px;margin:0 auto;
+}
+
+/* ===== CARDS ===== */
+.card{
+  background:var(--white);border-radius:var(--radius);
+  box-shadow:var(--shadow);padding:28px;
+  border:1px solid rgba(184,150,46,.1);
+  transition:.3s;
+}
+.card:hover{transform:translateY(-4px);box-shadow:0 12px 36px rgba(184,150,46,.18);}
+.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;}
+.grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px;}
+.grid-4{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;}
+.card-icon{
+  width:52px;height:52px;border-radius:14px;
+  background:linear-gradient(135deg,var(--gold-pale),#fff);
+  border:2px solid var(--gold-pale);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.5rem;margin-bottom:16px;
+}
+.card-title{font-size:1.1rem;font-weight:800;color:var(--text-dark);margin-bottom:8px;}
+.card-text{font-size:.9rem;color:var(--text-soft);line-height:1.8;}
+
+/* ===== ABOUT ===== */
+#about{background:var(--white);}
+.about-intro{
+  background:linear-gradient(135deg,var(--gold-pale),#fffcf5);
+  border-radius:var(--radius);padding:36px;
+  border:1px solid rgba(184,150,46,.15);
+  margin-bottom:40px;text-align:center;
+}
+.about-intro p{font-size:1.05rem;color:var(--text-mid);line-height:2;}
+
+/* ===== FOLLOW CHILDREN ===== */
+#follow{background:var(--beige);}
+.follow-box{
+  background:var(--white);border-radius:var(--radius);
+  box-shadow:var(--shadow);padding:40px;
+  max-width:700px;margin:0 auto;
+}
+.input-group{display:flex;gap:12px;margin-bottom:24px;flex-wrap:wrap;}
+.input-group input{
+  flex:1;min-width:200px;
+  border:2px solid var(--gold-pale);border-radius:50px;
+  padding:14px 22px;font-size:1rem;font-family:'Tajawal',sans-serif;
+  color:var(--text-dark);background:var(--beige);
+  outline:none;transition:.3s;
+  text-align:right;
+}
+.input-group input:focus{border-color:var(--gold);background:#fff;}
+.halaqat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px;margin-top:20px;}
+.halaqa-card{
+  background:var(--white);border:2px solid var(--gold-pale);
+  border-radius:var(--radius-sm);padding:18px;text-align:center;
+  cursor:pointer;transition:.3s;
+}
+.halaqa-card:hover,.halaqa-card.selected{
+  border-color:var(--gold);background:var(--gold-pale);
+}
+.halaqa-name{font-weight:800;color:var(--text-dark);margin-bottom:4px;}
+.halaqa-count{font-size:.82rem;color:var(--text-soft);}
+.students-table{width:100%;border-collapse:collapse;margin-top:20px;}
+.students-table th{
+  background:var(--gold-pale);color:var(--gold);
+  padding:12px 16px;font-size:.9rem;font-weight:700;
+  text-align:right;border-bottom:2px solid var(--gold-light);
+}
+.students-table td{
+  padding:12px 16px;font-size:.9rem;
+  border-bottom:1px solid var(--beige-dark);color:var(--text-mid);
+}
+.students-table tr.my-child td{
+  background:linear-gradient(90deg,rgba(184,150,46,.08),transparent);
+  font-weight:700;color:var(--text-dark);
+}
+.students-table tr:hover td{background:var(--beige);}
+.rank-badge{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:30px;height:30px;border-radius:50%;
+  font-weight:900;font-size:.85rem;
+}
+.rank-1{background:linear-gradient(135deg,#ffd700,#ffb300);color:#fff;}
+.rank-2{background:linear-gradient(135deg,#c0c0c0,#9e9e9e);color:#fff;}
+.rank-3{background:linear-gradient(135deg,#cd7f32,#a0522d);color:#fff;}
+.rank-other{background:var(--beige-dark);color:var(--text-soft);}
+.student-row{cursor:pointer;}
+.star-badge{color:var(--gold);margin-right:6px;}
+.hidden{display:none!important;}
+.step-title{
+  font-size:1rem;font-weight:800;color:var(--gold);
+  margin-bottom:14px;padding-bottom:10px;
+  border-bottom:2px solid var(--gold-pale);
+}
+
+/* ===== MODAL ===== */
+.modal-overlay{
+  position:fixed;inset:0;
+  background:rgba(44,36,22,.6);backdrop-filter:blur(4px);
+  z-index:2000;display:flex;align-items:center;justify-content:center;
+  padding:20px;opacity:0;pointer-events:none;transition:.35s;
+}
+.modal-overlay.open{opacity:1;pointer-events:all;}
+.modal-box{
+  background:var(--white);border-radius:20px;
+  max-width:700px;width:100%;max-height:90vh;overflow-y:auto;
+  box-shadow:0 20px 60px rgba(44,36,22,.25);
+  transform:translateY(30px) scale(.97);transition:.35s;
+}
+.modal-overlay.open .modal-box{transform:none;}
+.modal-header{
+  background:linear-gradient(135deg,var(--gold),var(--gold-light));
+  padding:28px 32px;border-radius:20px 20px 0 0;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.modal-header h2{color:#fff;font-size:1.3rem;font-weight:900;}
+.modal-close{
+  background:rgba(255,255,255,.25);border:none;
+  color:#fff;width:36px;height:36px;border-radius:50%;
+  cursor:pointer;font-size:1.1rem;transition:.2s;
+  display:flex;align-items:center;justify-content:center;
+}
+.modal-close:hover{background:rgba(255,255,255,.4);}
+.modal-body{padding:28px 32px;}
+.modal-student-info{
+  display:flex;align-items:center;gap:20px;
+  margin-bottom:24px;flex-wrap:wrap;
+}
+.modal-avatar{
+  width:64px;height:64px;border-radius:50%;
+  background:linear-gradient(135deg,var(--gold-pale),#fff);
+  border:3px solid var(--gold-light);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.8rem;flex-shrink:0;
+}
+.modal-name{font-size:1.2rem;font-weight:900;color:var(--text-dark);}
+.modal-rank{font-size:.9rem;color:var(--text-soft);margin-top:4px;}
+.medal-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  background:linear-gradient(135deg,var(--gold-pale),#fff);
+  border:2px solid var(--gold-light);
+  border-radius:50px;padding:6px 16px;
+  color:var(--gold);font-weight:800;font-size:.88rem;
+  margin-top:8px;
+}
+.progress-wrap{margin-bottom:24px;}
+.progress-label{
+  display:flex;justify-content:space-between;
+  font-size:.88rem;color:var(--text-mid);margin-bottom:8px;font-weight:600;
+}
+.progress-bar-bg{
+  background:var(--beige-dark);border-radius:50px;height:12px;overflow:hidden;
+}
+.progress-bar-fill{
+  height:100%;border-radius:50px;
+  background:linear-gradient(90deg,var(--gold),var(--gold-light));
+  transition:width 1s ease;
+}
+.modal-section{margin-bottom:24px;}
+.modal-section h4{
+  font-size:.95rem;font-weight:800;color:var(--gold);
+  margin-bottom:12px;padding-bottom:8px;
+  border-bottom:1px solid var(--gold-pale);
+}
+.data-table{width:100%;border-collapse:collapse;font-size:.88rem;}
+.data-table th{
+  background:var(--beige);color:var(--text-mid);
+  padding:10px 14px;text-align:right;
+  font-weight:700;border-bottom:2px solid var(--gold-pale);
+}
+.data-table td{
+  padding:10px 14px;border-bottom:1px solid var(--beige-dark);
+  color:var(--text-dark);
+}
+.data-table tr:hover td{background:var(--beige);}
+.attendance-dot{
+  display:inline-block;width:10px;height:10px;border-radius:50%;margin-left:4px;
+}
+.dot-present{background:#4caf50;}
+.dot-absent{background:#f44336;}
+.note-box{
+  background:var(--gold-pale);border-radius:var(--radius-sm);
+  padding:18px;font-size:.9rem;color:var(--text-mid);line-height:1.8;
+  border-right:4px solid var(--gold);
+}
+.chart-wrap{position:relative;height:200px;margin-bottom:10px;}
+
+/* ===== CAMPS ===== */
+#camps{background:var(--white);}
+.camp-card{
+  border-radius:var(--radius);overflow:hidden;
+  box-shadow:var(--shadow);border:1px solid rgba(184,150,46,.1);
+  transition:.3s;
+}
+.camp-card:hover{transform:translateY(-4px);box-shadow:0 12px 36px rgba(184,150,46,.2);}
+.camp-img{
+  height:200px;
+  background:linear-gradient(135deg,var(--gold-pale),#f0d898);
+  display:flex;align-items:center;justify-content:center;
+  font-size:3.5rem;
+  overflow:hidden;position:relative;
+}
+.camp-img img{
+  width:100%;height:100%;object-fit:cover;
+  transition:transform .5s ease;
+  display:block;
+}
+.camp-card:hover .camp-img img{transform:scale(1.06);}
+.camp-img-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to bottom, rgba(44,36,22,0) 40%, rgba(44,36,22,0.22) 100%);
+}
+.camp-info{padding:22px;}
+.camp-date{
+  display:inline-block;background:var(--gold-pale);
+  color:var(--gold);border-radius:50px;
+  padding:3px 12px;font-size:.78rem;font-weight:700;margin-bottom:10px;
+}
+.camp-title{font-size:1rem;font-weight:800;color:var(--text-dark);margin-bottom:6px;}
+.camp-desc{font-size:.88rem;color:var(--text-soft);line-height:1.7;}
+
+/* ===== ACTIVITIES ===== */
+#activities{background:var(--beige);}
+.gallery-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
+  gap:18px;
+}
+.gallery-item{
+  border-radius:var(--radius);overflow:hidden;
+  position:relative;box-shadow:var(--shadow);cursor:pointer;
+}
+.gallery-thumb{
+  height:200px;
+  background:linear-gradient(135deg,var(--gold-pale),#e8d08a);
+  display:flex;align-items:center;justify-content:center;
+  font-size:3rem;transition:.4s;
+  overflow:hidden;position:relative;
+}
+.gallery-thumb img{
+  width:100%;height:100%;object-fit:cover;
+  transition:transform .5s ease;display:block;
+}
+.gallery-item:hover .gallery-thumb img{transform:scale(1.08);}
+.gallery-thumb-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to bottom,transparent 50%,rgba(44,36,22,0.3));
+}
+.gallery-caption{
+  background:var(--white);padding:14px 18px;
+  font-size:.9rem;font-weight:700;color:var(--text-dark);
+}
+
+/* ===== EVENTS ===== */
+#events{background:var(--white);}
+
+/* ===== NOORANIYA ===== */
+#nooraniya{background:var(--beige);}
+.steps-list{display:flex;flex-direction:column;gap:18px;max-width:700px;margin:0 auto;}
+.step-item{
+  display:flex;align-items:flex-start;gap:18px;
+  background:var(--white);border-radius:var(--radius-sm);
+  padding:22px;box-shadow:var(--shadow);
+  border:1px solid rgba(184,150,46,.1);
+}
+.step-num{
+  width:42px;height:42px;flex-shrink:0;
+  background:linear-gradient(135deg,var(--gold),var(--gold-light));
+  border-radius:50%;color:#fff;font-weight:900;font-size:1rem;
+  display:flex;align-items:center;justify-content:center;
+}
+
+/* ===== COURSES ===== */
+#courses{background:var(--white);}
+.course-card{position:relative;}
+.course-level{
+  display:inline-block;background:var(--gold-pale);color:var(--gold);
+  border-radius:50px;padding:3px 12px;font-size:.75rem;font-weight:700;
+  margin-bottom:10px;
+}
+.course-duration{
+  display:flex;align-items:center;gap:6px;
+  font-size:.82rem;color:var(--text-soft);margin-top:10px;
+}
+
+/* ===== KNOWLEDGE ===== */
+#knowledge{background:var(--beige);}
+.knowledge-card{
+  display:flex;flex-direction:column;align-items:center;
+  text-align:center;gap:14px;
+}
+.k-icon{
+  width:64px;height:64px;
+  background:linear-gradient(135deg,var(--gold-pale),#fff);
+  border:2px solid var(--gold-pale);border-radius:18px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.8rem;
+}
+.k-items{display:flex;flex-direction:column;gap:8px;width:100%;margin-top:8px;}
+.k-link{
+  background:var(--beige);border-radius:8px;padding:10px 14px;
+  color:var(--text-mid);font-size:.88rem;font-weight:600;
+  text-decoration:none;transition:.2s;
+  border:1px solid var(--gold-pale);
+  display:flex;justify-content:space-between;align-items:center;
+}
+.k-link:hover{background:var(--gold-pale);color:var(--gold);}
+
+/* ===== YOUTUBE ===== */
+#youtube{background:var(--white);}
+.yt-wrap{
+  max-width:800px;margin:0 auto;
+  background:var(--text-dark);border-radius:var(--radius);
+  overflow:hidden;box-shadow:0 12px 40px rgba(44,36,22,.25);
+}
+.yt-wrap iframe{width:100%;height:400px;display:block;border:none;}
+.yt-info{
+  background:var(--text-dark);padding:20px 28px;
+  color:#fff;display:flex;align-items:center;gap:14px;
+}
+.yt-logo{font-size:1.8rem;}
+.yt-channel{font-weight:800;font-size:1rem;}
+.yt-subs{font-size:.82rem;color:rgba(255,255,255,.6);}
+.yt-btn{
+  margin-right:auto;background:#ff0000;color:#fff;
+  border:none;border-radius:50px;padding:8px 20px;
+  font-family:'Tajawal',sans-serif;font-weight:700;font-size:.88rem;
+  cursor:pointer;transition:.2s;
+}
+.yt-btn:hover{background:#cc0000;}
+
+/* ===== REGISTRATION ===== */
+#register{background:var(--beige);}
+.reg-form{
+  max-width:580px;margin:0 auto;
+  background:var(--white);border-radius:var(--radius);
+  box-shadow:var(--shadow);padding:40px;
+}
+.form-group{margin-bottom:20px;}
+.form-group label{
+  display:block;font-size:.9rem;font-weight:700;
+  color:var(--text-dark);margin-bottom:8px;
+}
+.form-group input,.form-group select{
+  width:100%;
+  border:2px solid var(--beige-dark);border-radius:var(--radius-sm);
+  padding:13px 16px;font-size:.95rem;font-family:'Tajawal',sans-serif;
+  color:var(--text-dark);background:var(--beige);
+  outline:none;transition:.3s;text-align:right;
+}
+.form-group input:focus,.form-group select:focus{
+  border-color:var(--gold);background:#fff;
+}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+
+/* ===== TEACHERS ===== */
+#teachers{background:var(--white);}
+.teacher-card{text-align:center;}
+.teacher-avatar{
+  width:90px;height:90px;border-radius:50%;
+  background:linear-gradient(135deg,var(--gold-pale),#e8d08a);
+  border:4px solid var(--gold-light);
+  display:flex;align-items:center;justify-content:center;
+  font-size:2rem;margin:0 auto 16px;
+}
+.teacher-name{font-size:1.05rem;font-weight:800;color:var(--text-dark);margin-bottom:6px;}
+.teacher-title{
+  display:inline-block;background:var(--gold-pale);color:var(--gold);
+  border-radius:50px;padding:3px 14px;font-size:.78rem;font-weight:700;
+  margin-bottom:10px;
+}
+
+/* ===== FAQ ===== */
+#faq{background:var(--beige);}
+.faq-list{max-width:700px;margin:0 auto;display:flex;flex-direction:column;gap:12px;}
+.faq-item{
+  background:var(--white);border-radius:var(--radius-sm);
+  box-shadow:var(--shadow);border:1px solid rgba(184,150,46,.1);
+  overflow:hidden;
+}
+.faq-q{
+  width:100%;background:none;border:none;text-align:right;
+  padding:18px 22px;font-family:'Tajawal',sans-serif;
+  font-size:.95rem;font-weight:700;color:var(--text-dark);
+  cursor:pointer;display:flex;justify-content:space-between;align-items:center;
+  transition:.2s;
+}
+.faq-q:hover{background:var(--gold-pale);}
+.faq-icon{
+  width:24px;height:24px;border-radius:50%;
+  background:var(--gold-pale);color:var(--gold);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.9rem;flex-shrink:0;transition:.3s;margin-right:8px;
+}
+.faq-item.open .faq-icon{transform:rotate(45deg);background:var(--gold);color:#fff;}
+.faq-a{
+  max-height:0;overflow:hidden;transition:.35s ease;
+}
+.faq-item.open .faq-a{max-height:200px;}
+.faq-a-inner{
+  padding:0 22px 18px;
+  font-size:.9rem;color:var(--text-soft);line-height:1.8;
+}
+
+/* ===== CONTACT ===== */
+#contact{background:var(--white);}
+.contact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px;max-width:800px;margin:0 auto;}
+.contact-item{
+  text-align:center;background:var(--beige);
+  border-radius:var(--radius);padding:32px 24px;
+  border:1px solid var(--gold-pale);
+}
+.contact-icon{font-size:2rem;margin-bottom:14px;}
+.contact-label{font-size:.85rem;color:var(--text-soft);font-weight:600;margin-bottom:6px;}
+.contact-val{font-size:1rem;font-weight:800;color:var(--text-dark);}
+.wa-btn{
+  display:inline-flex;align-items:center;gap:8px;
+  background:#25d366;color:#fff;border-radius:50px;
+  padding:12px 28px;font-size:.95rem;font-weight:700;
+  text-decoration:none;transition:.3s;margin-top:10px;
+  font-family:'Tajawal',sans-serif;border:none;cursor:pointer;
+}
+.wa-btn:hover{background:#1ebe5a;}
+
+/* ===== FOOTER ===== */
+footer{
+  background:var(--text-dark);color:rgba(255,255,255,.8);
+  padding:40px 20px 24px;text-align:center;
+}
+.footer-logo{
+  font-size:1.2rem;font-weight:900;color:var(--gold-light);margin-bottom:14px;
+}
+.footer-links{
+  display:flex;justify-content:center;flex-wrap:wrap;gap:8px;
+  list-style:none;margin-bottom:24px;
+}
+.footer-links a{color:rgba(255,255,255,.6);text-decoration:none;font-size:.82rem;transition:.2s;}
+.footer-links a:hover{color:var(--gold-light);}
+.footer-sep{color:rgba(255,255,255,.2);}
+.footer-copy{font-size:.8rem;color:rgba(255,255,255,.4);}
+
+/* ===== ANIMATIONS ===== */
+@@keyframes fadeDown{
+  from{opacity:0;transform:translateY(-18px);}
+  to{opacity:1;transform:none;}
+}
+.fade-in{opacity:0;transform:translateY(24px);transition:.7s ease;}
+.fade-in.visible{opacity:1;transform:none;}
+
+/* ===== SCROLL TOP ===== */
+#scrollTop{
+  position:fixed;bottom:28px;left:28px;
+  width:44px;height:44px;
+  background:linear-gradient(135deg,var(--gold),var(--gold-light));
+  color:#fff;border:none;border-radius:50%;
+  cursor:pointer;font-size:1.1rem;
+  box-shadow:0 4px 18px rgba(184,150,46,.4);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:.3s;z-index:900;
+}
+#scrollTop.show{opacity:1;pointer-events:all;}
+
+/* ===== MOBILE ===== */
+@@media(max-width:900px){
+  .nav-links{display:none;}
+  .hamburger{display:block;}
+  .form-grid{grid-template-columns:1fr;}
+  .modal-body{padding:20px;}
+}
+@@media(max-width:600px){
+  section{padding:60px 16px;}
+  .follow-box{padding:24px 16px;}
+  .reg-form{padding:24px 16px;}
+  .yt-wrap iframe{height:220px;}
+  .stats-inner{grid-template-columns:1fr 1fr;}
+  .stat-num{font-size:2rem;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="#hero" class="nav-logo">
+      <div class="logo-icon">📖</div>
+      <span>الماهر بالقرآن</span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#hero">الرئيسية</a></li>
+      <li><a href="#about">من نحن</a></li>
+      <li><a href="#follow">تابع أبناءك</a></li>
+      <li><a href="#camps">المخيمات</a></li>
+      <li><a href="#activities">المناشط</a></li>
+      <li><a href="#events">الحفلات</a></li>
+      <li><a href="#nooraniya">القاعدة النورانية</a></li>
+      <li><a href="#courses">البرنامج</a></li>
+      <li><a href="#knowledge">مصادر المعرفة</a></li>
+      <li><a href="#youtube">يوتيوب</a></li>
+      <li><a href="#register">التسجيل</a></li>
+      <li><a href="#contact">تواصل</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="قائمة">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#hero" onclick="closeMobile()">🏠 الرئيسية</a>
+    <a href="#about" onclick="closeMobile()">💬 من نحن</a>
+    <a href="#follow" onclick="closeMobile()">👨‍👩‍👧 تابع أبناءك</a>
+    <a href="#camps" onclick="closeMobile()">🏕️ المخيمات القرآنية</a>
+    <a href="#activities" onclick="closeMobile()">🎯 المناشط والرحلات</a>
+    <a href="#events" onclick="closeMobile()">🎉 الحفلات</a>
+    <a href="#nooraniya" onclick="closeMobile()">📘 القاعدة النورانية</a>
+    <a href="#courses" onclick="closeMobile()">🎓 البرنامج والدورات</a>
+    <a href="#knowledge" onclick="closeMobile()">📚 مصادر المعرفة</a>
+    <a href="#youtube" onclick="closeMobile()">▶️ قناتنا على يوتيوب</a>
+    <a href="#register" onclick="closeMobile()">📝 التسجيل</a>
+    <a href="#contact" onclick="closeMobile()">📞 تواصل معنا</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-ornament hero-ornament-1"></div>
+  <div class="hero-ornament hero-ornament-2"></div>
+  <div class="hero-content">
+    <h1 class="hero-title">مدرسة <span>الماهر بالقرآن</span></h1>
+    <p class="hero-subtitle">
+      نُعلّم أبناءكم القرآن الكريم تلاوةً وحفظاً وتجويداً<br>
+      في بيئة تعليمية متميزة تجمع بين الأصالة والحداثة
+    </p>
+    <div class="hero-btns">
+      <a href="#follow" class="btn-gold"> تابع أبناءك</a>
+      <a href="#register" class="btn-outline"> سجّل الآن</a>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-bar fade-in">
+  <div class="stats-inner">
+    <div class="stat-item">
+      <span class="stat-num" data-count="@ViewBag.TotalStudents">0</span>
+      <div class="stat-label">📚 عدد الطلاب المسجلين</div>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num" data-count="@ViewBag.TotalHalaqas">0</span>
+      <div class="stat-label">🕌 عدد الحلقات النشطة</div>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num" data-count="@ViewBag.TotalMemorizers">0</span>
+      <div class="stat-label">🏆 متفوق وأتم 50 جزء</div>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num" data-count="@ViewBag.TotalTeachers">0</span>
+      <div class="stat-label">👨‍🏫 عدد المعلمين</div>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-inner">
+    <div class="section-header fade-in">
+      <div class="section-tag">من نحن</div>
+      <h2 class="section-title">تعرّف علينا</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="about-intro fade-in">
+      <p>
+        مدرسة الماهر بالقرآن مؤسسة تعليمية قرآنية متخصصة في تحفيظ القرآن الكريم وتعليم أحكام التجويد
+        للأطفال والناشئين، تأسست عام 2010م وخدمت آلاف الطلاب على مدار سنوات من العطاء المتواصل.
+      </p>
+    </div>
+    <div class="grid-3">
+      <div class="card fade-in">
+        <div class="card-title">رؤيتنا</div>
+        <div class="card-text">أن نكون المدرسة الرائدة في تحفيظ القرآن الكريم وتخريج جيل مؤمن حافظ لكتاب الله، متشبّع بقيمه ومبادئه.</div>
+      </div>
+      <div class="card fade-in">
+        <div class="card-title">رسالتنا</div>
+        <div class="card-text">تقديم تعليم قرآني متميز في بيئة تربوية آمنة، وتنشئة جيل قادر على التلاوة الصحيحة والحفظ المتقن.</div>
+      </div>
+      <div class="card fade-in">
+        <div class="card-title">قيمنا</div>
+        <div class="card-text">الإخلاص والأمانة، احترام الطالب وتقديره، الارتقاء المستمر بجودة التعليم، والتواصل الوثيق مع أولياء الأمور.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOLLOW CHILDREN -->
+<section id="follow">
+  <div class="section-inner">
+    <div class="section-header fade-in">
+      <div class="section-tag">المتابعة</div>
+      <h2 class="section-title">تابع أبناءك</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="follow-box fade-in">
+      <!-- Step 1 -->
+      <div id="step1">
+        <div class="step-title">🔍 الخطوة الأولى: أدخل رقم الهاتف</div>
+        <div class="input-group">
+          <input type="tel" id="phoneInput" placeholder="01xxxxxxxxx" maxlength="12" dir="ltr"/>
+          <button class="btn-gold" onclick="showHalaqat()">عرض الأبناء</button>
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div id="step2" class="hidden">
+        <div class="step-title">📚 الخطوة الثانية: اختر الحلقة</div>
+        <div class="halaqat-grid" id="halaqatGrid"></div>
+      </div>
+
+      <!-- Step 3 -->
+      <div id="step3" class="hidden">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px;">
+          <div class="step-title" style="margin:0;">🏆 الطلاب في الحلقة</div>
+          <button class="btn-outline" style="padding:7px 16px;font-size:.82rem;" onclick="backToHalaqat()">← رجوع</button>
+        </div>
+        <div style="overflow-x:auto;">
+          <table class="students-table">
+            <thead>
+              <tr>
+                <th>الترتيب</th>
+                <th>اسم الطالب</th>
+                <th>عدد الأوجه</th>
+                <th>النقاط</th>
+              </tr>
+            </thead>
+            <tbody id="studentsBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="studentModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h2 id="modalTitle">ملف الطالب</h2>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<!-- CAMPS -->
+<section id="camps">
+  <div class="section-inner">
+    <div class="section-header fade-in">
+      <div class="section-tag">المخيمات</div>
+      <h2 class="section-title">المخيمات القرآنية</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="grid-3">
+      <div class="camp-card fade-in">
+        <div class="camp-img">
+          <img src="" alt="مخيم الرحمة الرمضاني" loading="lazy" onerror="this.style.display='none'"/>
+          <div class="camp-img-overlay"></div>
+        </div>
+        <div class="camp-info">
+          <span class="camp-date">١٥ رمضان ١٤٤٦</span>
+          <div class="camp-title">مخيم الرحمة الرمضاني</div>
+          <div class="camp-desc">مخيم قرآني مكثف خلال شهر رمضان المبارك، يتضمن ختم القرآن الكريم وجلسات روحانية متميزة.</div>
+        </div>
+      </div>
+      <div class="camp-card fade-in">
+        <div class="camp-img">
+          <img src="" alt="مخيم نجوم القرآن الصيفي" loading="lazy" onerror="this.style.display='none'"/>
+          <div class="camp-img-overlay"></div>
+        </div>
+        <div class="camp-info">
+          <span class="camp-date">الصيف 1446</span>
+          <div class="camp-title">مخيم نجوم القرآن الصيفي</div>
+          <div class="camp-desc">برنامج صيفي شامل للحفظ والمراجعة مع أنشطة ترفيهية هادفة في أجواء إيمانية جميلة.</div>
+        </div>
+      </div>
+      <div class="camp-card fade-in">
+        <div class="camp-img">
+          <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=600&q=80&auto=format&fit=crop" alt="مخيم التأهيل للمسابقات" loading="lazy" onerror="this.style.display='none'"/>
+          <div class="camp-img-overlay"></div>
+        </div>
+        <div class="camp-info">
+          <span class="camp-date">شعبان ١٤٤٦</span>
+          <div class="camp-title">مخيم التأهيل للمسابقات</div>
+          <div class="camp-desc">مخيم تدريبي متخصص للطلاب المتقدمين، تحضيراً للمسابقات القرآنية المحلية والدولية.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ACTIVITIES -->
+<section id="activities">
+  <div class="section-inner">
+    <div class="section-header fade-in">
+      <div class="section-tag">المناشط</div>
+      <h2 class="section-title">المناشط والرحلات</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="gallery-grid">
+      <div class="gallery-item fade-in">
+        <div class="gallery-thumb">
+          <img src="" alt="ورشة الفنون الإسلامية" loading="lazy" onerror="this.style.display='none'"/>
+          <div class="gallery-thumb-overlay"></div>
+        </div>
+        <div class="gallery-caption">ورشة الفنون الإسلامية</div>
+      </div>
+      <div class="gallery-item fade-in">
+        <div class="gallery-thumb">
+          <img src="" alt="رحلة تعليمية إلى المتحف" loading="lazy" onerror="this.style.display='none'"/>
+          <div class="gallery-thumb-overlay"></div>
+        </div>
+        <div class="gallery-caption">رحلة تعليمية إلى المتحف</div>
+      </div>
+      <div class="gallery-item fade-in">
+        <div class="gallery-thumb">
+          <img src="" alt="مسابقة الطلاب الشهرية" loading="lazy" onerror="this.style.display='none'"/>
+          <div class="gallery-thumb-overlay"></div>
+        </div>
+        <div class="gallery-caption">مسابقة الطلاب الشهرية</div>
+      </div>
+      <div class="gallery-item fade-in">
+        <div class="gallery-thumb">
+          <img src="" alt="نشاط الطبيعة والبيئة" loading="lazy" onerror="this.style.display='none'"/>
+          <div class="gallery-thumb-overlay"></div>
+        </div>
+        <div class="gallery-caption">نشاط الطبيعة والبيئة</div>
+      </div>
+      <div class="gallery-item fade-in">
+        <div class="gallery-thumb">
+          <img src="" alt="اليوم الرياضي السنوي" loading="lazy" onerror="this.style.display='none'"/>
+          <div class="gallery-thumb-overlay"></div>
+        </div>
+        <div class="gallery-caption">اليوم الرياضي السنوي</div>
+      </div>
+      <div class="gallery-item fade-in">
+        <div class="gallery-thumb">
+          <img src="https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=500&q=80&auto=format&fit=crop" alt="نادي القراءة الشهري" loading="lazy" onerror="this.style.display='none'"/>
+          <div class="gallery-thumb-overlay"></div>
+        </div>
+        <div class="gallery-caption">نادي القراءة الشهري</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EVENTS -->
+<section id="events">
+  <div class="section-inner">
+    <div class="section-header fade-in">
+      <div class="section-tag">الحفلات</div>
+      <h2 class="section-title">الحفلات والمناسبات</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="grid-3">
+      <div class="camp-card fade-in">
+        <div class="camp-img">
+          <img src="" alt="حفل تخريج الحفاظ" loading="lazy" onerror="this.style.display='none'"/>
+          <div class="camp-img-overlay"></div>
+        </div>
+        <div class="camp-info">
+          <span class="camp-date">جمادى الأولى ١٤٤٦</span>
+          <div class="camp-title">حفل تخريج الحفاظ السنوي</div>
+          <div class="camp-desc">احتفاء بالطلاب الذين أتموا حفظ القرآن الكريم، في حفل مهيب بحضور الأسر والمسؤولين.</div>
+        </div>
+      </div>
+      <div class="camp-card fade-in">
+        <div class="camp-img">
+          <img src="" alt="حفل تكريم المتميزين" loading="lazy" onerror="this.style.display='none'"/>
+          <div class="camp-img-overlay"></div>
+        </div>
+        <div class="camp-info">
+          <span class="camp-date">رجب ١٤٤٦</span>
+          <div class="camp-title">حفل تكريم المتميزين</div>
+          <div class="camp-desc">تكريم أوائل الطلاب وأصحاب أعلى الدرجات في كل فصل دراسي دعماً للتميز والتفوق.</div>
+        </div>
+      </div>
+      <div class="camp-card fade-in">
+        <div class="camp-img">
+          <img src="" alt="حفل المسابقة القرآنية الكبرى" loading="lazy" onerror="this.style.display='none'"/>
+          <div class="camp-img-overlay"></div>
+        </div>
+        <div class="camp-info">
+          <span class="camp-date">محرم ١٤٤٧</span>
+          <div class="camp-title">حفل المسابقة القرآنية الكبرى</div>
+          <div class="camp-desc">مسابقة سنوية مفتوحة على مستوى المدرسة بجوائز قيّمة في التلاوة والحفظ والتجويد.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NOORANIYA -->
+<section id="nooraniya">
+  <div class="section-inner">
+    <div class="section-header fade-in">
+      <div class="section-tag">القراءة</div>
+      <h2 class="section-title">القاعدة النورانية</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="steps-list">
+      <div class="step-item fade-in">
+        <div class="step-num">١</div>
+        <div>
+          <div class="card-title">تعلّم الحروف الهجائية</div>
+          <div class="card-text">نبدأ مع الطالب من الصفر، تعليم الحروف بأشكالها وأصواتها الصحيحة بأساليب مبتكرة وجذابة.</div>
+        </div>
+      </div>
+      <div class="step-item fade-in">
+        <div class="step-num">٢</div>
+        <div>
+          <div class="card-title">أحكام التجويد الأساسية</div>
+          <div class="card-text">تدريس مخارج الحروف وصفاتها وأحكام النون الساكنة والتنوين والمد بشكل تدريجي.</div>
+        </div>
+      </div>
+      <div class="step-item fade-in">
+        <div class="step-num">٣</div>
+        <div>
+          <div class="card-title">التطبيق العملي على القرآن</div>
+          <div class="card-text">بعد إتقان القاعدة يتدرج الطالب في تلاوة القرآن الكريم تلاوة صحيحة مجوّدة.</div>
+        </div>
+      </div>
+      <div class="step-item fade-in">
+        <div class="step-num">٤</div>
+        <div>
+          <div class="card-title">الانتقال إلى مرحلة الحفظ</div>
+          <div class="card-text">يصبح الطالب مؤهلاً للانضمام إلى حلقات الحفظ المكثّف بعد إتمام مراحل القاعدة.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COURSES -->
+<section id="courses">
+  <div class="section-inner">
+    <div class="section-header fade-in">
+      <div class="section-tag">التعليم</div>
+      <h2 class="section-title">البرنامج والدورات</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="grid-3">
+      <div class="card course-card fade-in">
+        <div class="card-icon">🌱</div>
+        <span class="course-level">مبتدئ</span>
+        <div class="card-title">دورة القاعدة النورانية</div>
+        <div class="card-text">تعليم القراءة الصحيحة من الصفر لغير القارئين وضعاف القراءة.</div>
+        <div class="course-duration">⏱️ المدة: ٣ أشهر | ٣ أيام/أسبوع</div>
+      </div>
+      <div class="card course-card fade-in">
+        <div class="card-icon">📗</div>
+        <span class="course-level">متوسط</span>
+        <div class="card-title">برنامج حفظ جزء عم</div>
+        <div class="card-text">حفظ الجزء الثلاثين مع مراجعة التجويد وتثبيت المحفوظ.</div>
+        <div class="course-duration">⏱️ المدة: ٦ أشهر | يومياً</div>
+      </div>
+      <div class="card course-card fade-in">
+        <div class="card-icon">📘</div>
+        <span class="course-level">متقدم</span>
+        <div class="card-title">برنامج الحفظ المكثف</div>
+        <div class="card-text">حفظ القرآن الكريم كاملاً ضمن منهج علمي منظم مع الشيوخ المتخصصين.</div>
+        <div class="course-duration">⏱️ المدة: ٢-٣ سنوات | يومياً</div>
+      </div>
+      <div class="card course-card fade-in">
+        <div class="card-icon">🎯</div>
+        <span class="course-level">تخصصي</span>
+        <div class="card-title">دورة أحكام التجويد</div>
+        <div class="card-text">دراسة نظرية وتطبيقية لأحكام التجويد وصولاً للإجازة بسند متصل.</div>
+        <div class="course-duration">⏱️ المدة: سنة كاملة</div>
+      </div>
+      <div class="card course-card fade-in">
+        <div class="card-icon">🏆</div>
+        <span class="course-level">مسابقات</span>
+        <div class="card-title">تأهيل المسابقات القرآنية</div>
+        <div class="card-text">إعداد وتدريب الطلاب للمشاركة في المسابقات المحلية والدولية.</div>
+        <div class="course-duration">⏱️ المدة: ٣ أشهر قبل كل مسابقة</div>
+      </div>
+      <div class="card course-card fade-in">
+        <div class="card-icon">👩‍👧</div>
+        <span class="course-level">خاص</span>
+        <div class="card-title">برنامج الأمهات</div>
+        <div class="card-text">برنامج خاص للأمهات لتعليم القرآن وتمكينهن من متابعة أبنائهن في المنزل.</div>
+        <div class="course-duration">⏱️ المدة: مستمر | مرونة في المواعيد</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- KNOWLEDGE -->
+<section id="knowledge">
+  <div class="section-inner">
+    <div class="section-header fade-in">
+      <div class="section-tag">المعرفة</div>
+      <h2 class="section-title">مصادر المعرفة</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="grid-3">
+      <div class="card knowledge-card fade-in">
+        <div class="k-icon">📰</div>
+        <div class="card-title">المقالات التعليمية</div>
+        <div class="k-items">
+          <a href="#" class="k-link">فضل تحفيظ الأبناء القرآن <span>←</span></a>
+          <a href="#" class="k-link">أساليب حفظ القرآن للأطفال <span>←</span></a>
+          <a href="#" class="k-link">كيف تتابع ابنك في الحلقة؟ <span>←</span></a>
+          <a href="#" class="k-link">أحكام التجويد الأساسية <span>←</span></a>
+        </div>
+      </div>
+      <div class="card knowledge-card fade-in">
+        <div class="k-icon">🎬</div>
+        <div class="card-title">مقاطع الفيديو</div>
+        <div class="k-items">
+          <a href="#" class="k-link">شرح مخارج الحروف <span>←</span></a>
+          <a href="#" class="k-link">تلاوات نموذجية للطلاب <span>←</span></a>
+          <a href="#" class="k-link">برنامج ختمة رمضان <span>←</span></a>
+          <a href="#" class="k-link">نصائح الشيوخ لأولياء الأمور <span>←</span></a>
+        </div>
+      </div>
+      <div class="card knowledge-card fade-in">
+        <div class="k-icon">📂</div>
+        <div class="card-title">الملفات والموارد</div>
+        <div class="k-items">
+          <a href="#" class="k-link">جدول مراجعة القرآن (PDF) <span>←</span></a>
+          <a href="#" class="k-link">بطاقات مخارج الحروف <span>←</span></a>
+          <a href="#" class="k-link">منهج الدراسة السنوي <span>←</span></a>
+          <a href="#" class="k-link">نموذج تقرير الطالب <span>←</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- YOUTUBE -->
+<section id="youtube">
+  <div class="section-inner">
+    <div class="section-header fade-in">
+      <div class="section-tag">يوتيوب</div>
+      <h2 class="section-title">قناتنا على يوتيوب</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="yt-wrap fade-in">
+      <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen title="قناة مدرسة الماهر بالقرآن"></iframe>
+      <div class="yt-info">
+        <div class="yt-logo">▶️</div>
+        <div>
+          <div class="yt-channel">قناة مدرسة الماهر بالقرآن</div>
+          <div class="yt-subs">+12,000 مشترك • تلاوات • دروس • مناشط</div>
+        </div>
+        <a href="https://youtube.com" target="_blank" class="yt-btn">اشترك الآن</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REGISTRATION -->
+<section id="register">
+  <div class="section-inner">
+    <div class="section-header fade-in">
+      <div class="section-tag">الانضمام</div>
+      <h2 class="section-title">التسجيل في المدرسة</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="reg-form fade-in">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>👤 اسم الطالب</label>
+          <input type="text" id="regName" placeholder="الاسم الكامل"/>
+        </div>
+        <div class="form-group">
+          <label>🎂 السن</label>
+          <input type="number" id="regAge" placeholder="العمر بالسنوات" min="4" max="18"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>📱 رقم الهاتف (ولي الأمر)</label>
+        <input type="tel" id="regPhone" placeholder="05XXXXXXXX" dir="ltr"/>
+      </div>
+      <div class="form-group">
+        <label>📚 المستوى الحالي</label>
+        <select id="regLevel">
+          <option value="">— اختر المستوى —</option>
+          <option>لا يقرأ بعد</option>
+          <option>يتعلم القاعدة النورانية</option>
+          <option>يقرأ ويحتاج تحسين</option>
+          <option>يحفظ أجزاءً من القرآن</option>
+          <option>حافظ للقرآن كاملاً</option>
+        </select>
+      </div>
+      <button class="btn-gold" style="width:100%;font-size:1.05rem;" onclick="sendWhatsApp()">
+        📲 إرسال التسجيل عبر واتساب
+      </button>
+      <p style="text-align:center;font-size:.82rem;color:var(--text-soft);margin-top:12px;">
+        سيتم التواصل معكم خلال ٢٤ ساعة من استلام الطلب
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- TEACHERS -->
+<section id="teachers" style="background:var(--beige);">
+  <div class="section-inner">
+    <div class="section-header fade-in">
+      <div class="section-tag">الكادر التعليمي</div>
+      <h2 class="section-title">معلمونا المتميزون</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="grid-4">
+      <div class="card teacher-card fade-in">
+        <div class="teacher-avatar">👨‍🏫</div>
+        <div class="teacher-name">الشيخ أحمد الزهراني</div>
+        <span class="teacher-title">مدير المدرسة</span>
+        <div class="card-text">حافظ للقرآن الكريم، متخصص في التجويد، خبرة ٢٠ عاماً في تعليم القرآن.</div>
+      </div>
+      <div class="card teacher-card fade-in">
+        <div class="teacher-avatar">👨‍🏫</div>
+        <div class="teacher-name">الشيخ محمد العتيبي</div>
+        <span class="teacher-title">مشرف الحلقات</span>
+        <div class="card-text">إجازة في حفص عن عاصم، متخصص في تعليم الأطفال والناشئين.</div>
+      </div>
+      <div class="card teacher-card fade-in">
+        <div class="teacher-avatar">👩‍🏫</div>
+        <div class="teacher-name">الأستاذة نورة السالم</div>
+        <span class="teacher-title">معلمة الطالبات</span>
+        <div class="card-text">حافظة للقرآن الكريم، خريجة كلية القرآن الكريم، خبرة ١٢ سنة.</div>
+      </div>
+      <div class="card teacher-card fade-in">
+        <div class="teacher-avatar">👨‍🏫</div>
+        <div class="teacher-name">الشيخ خالد المالكي</div>
+        <span class="teacher-title">معلم الحفظ المكثف</span>
+        <div class="card-text">متخصص في برامج الحفظ المكثف والتأهيل للمسابقات القرآنية الكبرى.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="section-inner">
+    <div class="section-header fade-in">
+      <div class="section-tag">الأسئلة</div>
+      <h2 class="section-title">الأسئلة الشائعة</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item fade-in">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          ما هو سن القبول في المدرسة؟
+          <div class="faq-icon">+</div>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">
+          نقبل الطلاب من سن ٤ سنوات فما فوق، حيث يبدأ الأطفال الصغار بالقاعدة النورانية وتحفيظ السور القصيرة بأساليب ممتعة ومناسبة لأعمارهم.
+        </div></div>
+      </div>
+      <div class="faq-item fade-in">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          ما هو نظام الحفظ المتبع في المدرسة؟
+          <div class="faq-icon">+</div>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">
+          نعتمد نظام الحفظ التدريجي: يحفظ الطالب صفحة أو وجهاً يومياً، مع مراجعة أسبوعية وشهرية للتثبيت. نستخدم قاعدة: حفظ جديد + مراجعة قريبة + مراجعة بعيدة.
+        </div></div>
+      </div>
+      <div class="faq-item fade-in">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          كيف يتم تقييم الطلاب؟
+          <div class="faq-icon">+</div>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">
+          التقييم يشمل: الحضور (٢٠%)، إنجاز الأوجه الجديدة (٤٠%)، نقاط المراجعة (٢٠%)، نتائج الاختبارات الشهرية (٢٠%). يتم تحديث التقارير أسبوعياً عبر منصة المدرسة.
+        </div></div>
+      </div>
+      <div class="faq-item fade-in">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          هل تتوفر حلقات للطالبات؟
+          <div class="faq-icon">+</div>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">
+          نعم، لدينا حلقات مستقلة للطالبات بإشراف معلمات متخصصات حافظات للقرآن الكريم، في بيئة مناسبة وآمنة.
+        </div></div>
+      </div>
+      <div class="faq-item fade-in">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          كيف يمكن لولي الأمر متابعة تقدم ابنه؟
+          <div class="faq-icon">+</div>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">
+          عبر منصة "تابع أبناءك" في هذا الموقع يمكنك الاطلاع على الترتيب والنقاط والحضور وملاحظات الشيخ أسبوعياً، كما نرسل تقارير شهرية على واتساب.
+        </div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-inner">
+    <div class="section-header fade-in">
+      <div class="section-tag">تواصل</div>
+      <h2 class="section-title">تواصل معنا</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-item fade-in">
+        <div class="contact-icon">📱</div>
+        <div class="contact-label">الهاتف</div>
+        <div class="contact-val" dir="ltr">+966 50 123 4567</div>
+      </div>
+      <div class="contact-item fade-in">
+        <div class="contact-icon">📍</div>
+        <div class="contact-label">العنوان</div>
+        <div class="contact-val">حي النزهة، الرياض</div>
+      </div>
+      <div class="contact-item fade-in">
+        <div class="contact-icon">🕐</div>
+        <div class="contact-label">أوقات العمل</div>
+        <div class="contact-val">السبت – الخميس | ٤ – ٩ م</div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:36px;" class="fade-in">
+      <a href="https://wa.me/966501234567?text=السلام عليكم، أريد الاستفسار عن مدرسة الماهر بالقرآن" target="_blank" class="wa-btn">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+        تواصل معنا على واتساب
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">📖 مدرسة الماهر بالقرآن</div>
+  <ul class="footer-links">
+    <li><a href="#hero">الرئيسية</a></li>
+    <li class="footer-sep">|</li>
+    <li><a href="#about">من نحن</a></li>
+    <li class="footer-sep">|</li>
+    <li><a href="#courses">الدورات</a></li>
+    <li class="footer-sep">|</li>
+    <li><a href="#register">التسجيل</a></li>
+    <li class="footer-sep">|</li>
+    <li><a href="#contact">تواصل معنا</a></li>
+  </ul>
+  <div class="footer-copy">© ١٤٤٦هـ مدرسة الماهر بالقرآن • جميع الحقوق محفوظة</div>
+</footer>
+
+<!-- SCROLL TOP -->
+<button id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="العودة للأعلى">↑</button>
+
+<script>
+// ===== DATA Fetching API =====
+let currentPhone = "";
+let currentHalaqa = null;
+let progressChart = null;
+
+let apiParentData = null;
+
+document.addEventListener('DOMContentLoaded', () => {
+  const savedPhone = localStorage.getItem('parentPhone');
+  if(savedPhone) {
+    document.getElementById('phoneInput').value = savedPhone;
+  }
+});
+
+async function showHalaqat(isAutoLoad = false) {
+  const phone = document.getElementById('phoneInput').value.trim();
+  if(!phone){
+      if(!isAutoLoad) alert('الرجاء إدخال رقم الهاتف'); 
+      return;
+  }
+  currentPhone = phone;
+  localStorage.setItem('parentPhone', phone);
+
+  try {
+    const res = await fetch('/Home/GetParentData?phone=' + phone);
+    const data = await res.json();
+
+    if(!data.success) {
+      if(!isAutoLoad) alert('لم يتم العثور على أبناء مسجلين بهذا الرقم.');
+      else {
+          // If auto-loaded but phone was somehow wrong or deleted from DB, clear it out.
+          localStorage.removeItem('parentPhone');
+          document.getElementById('phoneInput').value = "";
+      }
+      return;
+    }
+
+    apiParentData = data;
+
+    document.getElementById('step1').classList.add('hidden');
+    document.getElementById('step2').classList.remove('hidden');
+
+    const grid = document.getElementById('halaqatGrid');
+    grid.innerHTML = '';
+
+    const info = document.createElement('div');
+    info.style.cssText = "background:var(--gold-pale);border-radius:10px;padding:14px 18px;margin-bottom:16px;font-size:.9rem;color:var(--text-mid);";
+    info.innerHTML = `مرحباً بك <strong>${data.parentName}</strong> 👋`;
+    grid.appendChild(info);
+
+    data.halaqat.forEach(h => {
+      const div = document.createElement('div');
+      div.className = 'halaqa-card';
+      div.innerHTML = `<div class="halaqa-name">${h.name}</div><div class="halaqa-count">👨‍🏫 ${h.sheikh}</div><div class="halaqa-count">${h.students.length} طالب بالحلقة</div>`;
+      div.onclick = () => showStudents(h, div);
+      grid.appendChild(div);
+    });
+  } catch(e) {
+    alert('حدث خطأ أثناء الاتصال بالخادم.');
+  }
+}
+
+function showStudents(halaqaObj, cardEl) {
+  document.querySelectorAll('.halaqa-card').forEach(c => c.classList.remove('selected'));
+  if (cardEl) cardEl.classList.add('selected');
+  currentHalaqa = halaqaObj.id;
+  
+  setTimeout(()=>{
+    document.getElementById('step2').classList.add('hidden');
+    document.getElementById('step3').classList.remove('hidden');
+    
+    // Sort descending by total pages then pagesProgress
+    const sorted = [...halaqaObj.students].sort((a,b) => (b.awjoh + (b.pagesProgress/1000)) - (a.awjoh + (a.pagesProgress/1000)));
+    
+    const tbody = document.getElementById('studentsBody');
+    tbody.innerHTML = '';
+    sorted.forEach((s,i) => {
+      const rank = i+1;
+      let badge = `<div class="rank-badge rank-other">${rank}</div>`;
+      if(rank===1) badge = `<div class="rank-badge rank-1">🥇</div>`;
+      if(rank===2) badge = `<div class="rank-badge rank-2">🥈</div>`;
+      if(rank===3) badge = `<div class="rank-badge rank-3">🥉</div>`;
+      
+      const tr = document.createElement('tr');
+      tr.className = `student-row${s.isMyChild ? ' my-child' : ''}`;
+      tr.innerHTML = `<td>${badge}</td><td>${s.isMyChild ? '⭐ ' : ''}<strong>${s.name}</strong></td><td>${s.awjoh} وجهاً</td><td>${s.pagesProgress}</td>`;
+      
+      if (s.isMyChild) {
+        tr.onclick = () => openModal(s, rank);
+        tr.style.cursor = 'pointer';
+        tr.title = 'اضغط لعرض ملف الطالب وملاحظات المعلم';
+      } else {
+        tr.style.opacity = '0.7';
+        tr.title = 'لا يمكن عرض تفاصيل الطلاب الآخرين لضمان الخصوصية';
+      }
+      tbody.appendChild(tr);
+    });
+  }, 200);
+}
+
+function backToHalaqat(){
+  document.getElementById('step3').classList.add('hidden');
+  document.getElementById('step2').classList.remove('hidden');
+}
+
+function openModal(student, rank){
+  const modal = document.getElementById('studentModal');
+  const body = document.getElementById('modalBody');
+  document.getElementById('modalTitle').textContent = 'ملف الطالب';
+  
+  const targetAwjoh = student.targetPages && student.targetPages > 0 ? student.targetPages : 30;
+  const pct = Math.round((student.awjoh / targetAwjoh) * 100);
+  
+  let chartDates = ['اليوم'];
+  let chartScores = [0];
+  let attendanceRows = `<tr><td colspan="2" style="text-align:center;">لم يسجل حضور بعد</td></tr>`;
+  let latestNote = "لا توجد ملاحظات مسجلة بعد.";
+
+  if (student.sessions && student.sessions.length > 0) {
+    // Reverse so the oldest is on the left of chart, newest on right
+    chartDates = student.sessions.map(r => r.date).reverse();
+    chartScores = student.sessions.map(r => r.score).reverse();
+
+    attendanceRows = student.sessions.map(s => {
+      return `<tr><td>${s.date}</td><td><span class="attendance-dot ${s.isPresent?'dot-present':'dot-absent'}"></span> ${s.isPresent?'حاضر':'غائب'}</td></tr>`;
+    }).join('');
+
+    const noteRecord = student.sessions.find(s => s.note && s.note.trim() !== "");
+    if (noteRecord) {
+      latestNote = noteRecord.date + ": " + noteRecord.note;
+    }
+  }
+  
+  let badgeText = rank===1?'🥇 الطالب الأول':rank===2?'🥈 متفوق':rank===3?'🥉 ممتاز':(student.awjoh>=15?'⭐ حافظ متميز':'📖 طالب مجتهد');
+  
+  let avatarHtml = `<div class="modal-avatar">📖</div>`;
+  if (student.profileImageUrl) {
+      avatarHtml = `<div class="modal-avatar" style="background-image: url('${student.profileImageUrl}'); background-size: cover; background-position: center;"></div>`;
+  }
+  
+  body.innerHTML = `
+    <div class="modal-student-info">
+      ${avatarHtml}
+      <div>
+        <div class="modal-name">${student.name}</div>
+        <div class="modal-rank">الترتيب: #${rank} في الحلقة</div>
+        <div class="medal-badge">${badgeText}</div>
+      </div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-label"><span>تقدم الحفظ</span><span>${student.awjoh}/${targetAwjoh} وجهاً (${pct}%)</span></div>
+      <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:0%" id="progFill"></div></div>
+    </div>
+    <div class="modal-section">
+      <h4>📈 منحنى التقييم اليومي (من 100 نقطة)</h4>
+      <div class="chart-wrap"><canvas id="progressChart"></canvas></div>
+    </div>
+    <div class="modal-section">
+      <h4>📋 سجل الحضور الحديث</h4>
+      <div style="overflow-x:auto;">
+        <table class="data-table"><thead><tr><th>التاريخ</th><th>الحالة</th></tr></thead><tbody>${attendanceRows}</tbody></table>
+      </div>
+    </div>
+    <div class="modal-section">
+      <h4>📊 إجمالي المؤشرات</h4>
+      <div style="overflow-x:auto;">
+        <table class="data-table">
+          <thead><tr><th>البند</th><th>النسبة والتفاصيل</th></tr></thead>
+          <tbody>
+            <tr><td>الالتزام بالحضور</td><td><strong style="color:#4CAF50;">${student.attendance}%</strong> حضور فعلي</td></tr>
+            <tr><td>إنجاز الأوجه</td><td><strong style="color:var(--gold);">${pct}%</strong> (${student.awjoh} من أصل ${targetAwjoh} وجه)</td></tr>
+            <tr><td>إنجاز النقاط</td><td><strong>${student.pagesProgress}</strong> نقطة مكتسبة</td></tr>
+            <tr><td>إجمالي التقييم</td><td><strong>${student.pointProgress}</strong> نقطة</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="modal-section">
+      <h4>📝 أحدث ملحوظات المعلم</h4>
+      <div class="note-box">${latestNote}</div>
+    </div>
+  `;
+  
+  modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  
+  setTimeout(()=>{
+    const fill = document.getElementById('progFill');
+    if(fill) fill.style.width = pct+'%';
+    
+    const ctx = document.getElementById('progressChart');
+    if(ctx){
+      if(progressChart) progressChart.destroy();
+      progressChart = new Chart(ctx, {
+        type:'line',
+        data:{
+          labels: chartDates,
+          datasets:[{
+            label:'نقاط الجلسة',
+            data: chartScores,
+            borderColor:'#b8962e',
+            backgroundColor:'rgba(184,150,46,.12)',
+            borderWidth:3,
+            pointBackgroundColor:'#b8962e',
+            pointRadius:5,
+            tension:0.4,
+            fill:true
+          }]
+        },
+        options:{
+          responsive:true,maintainAspectRatio:false,
+          plugins:{legend:{display:false}},
+          scales:{
+            y:{beginAtZero:true, max:100, grid:{color:'rgba(184,150,46,.1)'},ticks:{color:'#8a7355', stepSize:20}},
+            x:{grid:{color:'rgba(184,150,46,.1)'},ticks:{color:'#8a7355',font:{family:'Tajawal'}}}
+          }
+        }
+      });
+    }
+  }, 200);
+}
+
+function closeModal(){
+  document.getElementById('studentModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.getElementById('studentModal').addEventListener('click',function(e){
+  if(e.target===this) closeModal();
+});
+
+// ===== FAQ =====
+function toggleFaq(btn){
+  const item = btn.parentElement;
+  const wasOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(f=>f.classList.remove('open'));
+  if(!wasOpen) item.classList.add('open');
+}
+
+// ===== REGISTRATION =====
+function sendWhatsApp(){
+  const name = document.getElementById('regName').value.trim();
+  const age  = document.getElementById('regAge').value.trim();
+  const phone= document.getElementById('regPhone').value.trim();
+  const level= document.getElementById('regLevel').value;
+  if(!name||!age||!phone||!level){alert('الرجاء تعبئة جميع الحقول');return;}
+  const msg = encodeURIComponent(`السلام عليكم 🌹\nأرغب في تسجيل ابني في مدرسة الماهر بالقرآن:\n👤 الاسم: ${name}\n🎂 العمر: ${age} سنوات\n📱 الهاتف: ${phone}\n📚 المستوى: ${level}`);
+  window.open(`https://wa.me/966501234567?text=${msg}`,'_blank');
+}
+
+// ===== NAVBAR =====
+function toggleMenu(){
+  document.getElementById('mobileMenu').classList.toggle('open');
+}
+function closeMobile(){
+  document.getElementById('mobileMenu').classList.remove('open');
+}
+window.addEventListener('scroll',()=>{
+  const nav = document.getElementById('navbar');
+  const top = document.getElementById('scrollTop');
+  nav.classList.toggle('scrolled', window.scrollY>30);
+  top.classList.toggle('show', window.scrollY>300);
+});
+
+// ===== COUNTER ANIMATION =====
+function animateCounters(){
+  document.querySelectorAll('[data-count]').forEach(el=>{
+    const target = +el.dataset.count;
+    let current = 0;
+    const step = Math.ceil(target/60);
+    const timer = setInterval(()=>{
+      current = Math.min(current+step, target);
+      el.textContent = current.toLocaleString('ar-SA');
+      if(current>=target) clearInterval(timer);
+    },25);
+  });
+}
+
+// ===== SCROLL ANIMATIONS =====
+const observer = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.classList.add('visible');
+      if(e.target.querySelector('[data-count]')){
+        animateCounters();
+      }
+    }
+  });
+},{threshold:.12});
+document.querySelectorAll('.fade-in').forEach(el=>observer.observe(el));
+
+// ===== ACTIVE NAV =====
+const sections = document.querySelectorAll('section[id], div.stats-bar[id]');
+const navLinks = document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll',()=>{
+  let current='';
+  document.querySelectorAll('section[id]').forEach(sec=>{
+    if(window.scrollY>=sec.offsetTop-120) current=sec.id;
+  });
+  navLinks.forEach(a=>{
+    a.classList.remove('active');
+    if(a.getAttribute('href')==='#'+current) a.classList.add('active');
+  });
+},{ passive:true });
+</script>
+</body>
+</html>
