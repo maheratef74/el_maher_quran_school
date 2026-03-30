@@ -1,0 +1,28 @@
+# .NET Core
+bin/
+obj/
+[Ee]bug/
+[Rr]elease/
+*.user
+*.userosscache
+*.sln.docstates
+
+# Visual Studio
+.vs/
+.idea/
+.vscode/
+
+# Web
+wwwroot/lib/
+wwwroot/uploads/*
+!wwwroot/uploads/.gitkeep
+
+# User-specific files
+appsettings.Development.json
+*.db
+*.sqlite
+
+# OS specific files
+.DS_Store
+Thumbs.db
+desktop.ini
