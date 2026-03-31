@@ -14,6 +14,12 @@ namespace ElMaherQuranSchool.Models
         [StringLength(20)]
         public string PhoneNumber { get; set; } = string.Empty;
 
+        [StringLength(1000)]
+        public string Description { get; set; } = string.Empty;
+
+        [StringLength(100)]
+        public string? Role { get; set; }
+
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 

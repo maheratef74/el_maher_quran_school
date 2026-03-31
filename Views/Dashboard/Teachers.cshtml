@@ -15,8 +15,11 @@
             <thead>
                 <tr>
                     <th>اسم المعلم</th>
+                    <th>المسمى الوظيفي</th>
                     <th>رقم الجوال</th>
+                    <th>نبذة</th>
                     <th>تاريخ التسجيل</th>
+                    <th>الإجراءات</th>
                 </tr>
             </thead>
             <tbody>
@@ -24,8 +27,21 @@
                 {
                     <tr>
                         <td style="font-weight:bold; color:var(--text-dark);">@teacher.Name</td>
+                        <td style="font-size: .9rem; color:var(--gold);">@(string.IsNullOrEmpty(teacher.Role) ? "-" : teacher.Role)</td>
                         <td style="direction: ltr; text-align: right;">@(string.IsNullOrEmpty(teacher.PhoneNumber) ? "-" : teacher.PhoneNumber)</td>
+                        <td style="font-size: .85rem; color:var(--text-soft); max-width: 250px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                            @(string.IsNullOrEmpty(teacher.Description) ? "-" : teacher.Description)
+                        </td>
                         <td style="font-size: .9rem;">@teacher.CreatedAt.ToString("yyyy/MM/dd")</td>
+                        <td>
+                            <div style="display:flex; gap:5px;">
+                                <a href="/Dashboard/EditTeacher?id=@teacher.Id" class="btn" style="padding: 4px 10px; font-size: .85rem; background: var(--blue-soft);">✏️ تعديل</a>
+                                <form method="post" action="/Dashboard/DeleteTeacher" style="display:inline;" onsubmit="return confirm('هل أنت متأكد من حذف هذا المعلم؟ سيتم فصله عن الحلقات المسجل بها.')">
+                                    <input type="hidden" name="id" value="@teacher.Id" />
+                                    <button type="submit" class="btn" style="padding: 4px 10px; font-size: .85rem; background: #f44336; box-shadow:none;">🗑️ حذف</button>
+                                </form>
+                            </div>
+                        </td>
                     </tr>
                 }
             </tbody>

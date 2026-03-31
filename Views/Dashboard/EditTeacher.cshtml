@@ -1,0 +1,40 @@
+@model Teacher
+@{
+    ViewData["Title"] = "تعديل بيانات المعلم";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="card" style="max-width: 600px; margin: 0 auto;">
+    <h3 style="margin: 0 0 24px; color: var(--gold); border-bottom: 2px solid var(--gold-pale); padding-bottom: 12px;">تعديل بيانات المعلم</h3>
+
+    @Html.ValidationSummary(true, "", new { style="color:red; margin-bottom:15px; font-weight:bold;" })
+
+    <form method="post" action="/Dashboard/EditTeacher">
+        <input type="hidden" name="id" value="@Model.Id" />
+        
+        <div style="margin-bottom: 20px;">
+            <label class="form-label" for="Name">الاسم الرباعي</label>
+            <input type="text" class="form-control" id="Name" name="Name" value="@Model.Name" placeholder="أدخل اسم المعلم..." required />
+        </div>
+
+        <div style="margin-bottom: 20px;">
+            <label class="form-label" for="Role">المسمى الوظيفي / الدور</label>
+            <input type="text" class="form-control" id="Role" name="Role" value="@Model.Role" placeholder="أدخل المسمى الوظيفي..." />
+        </div>
+
+        <div style="margin-bottom: 24px;">
+            <label class="form-label" for="PhoneNumber">رقم الجوال (اختياري)</label>
+            <input type="tel" class="form-control" id="PhoneNumber" name="PhoneNumber" value="@Model.PhoneNumber" placeholder="05XXXXXXXX" dir="ltr" style="text-align: right;" />
+        </div>
+
+        <div style="margin-bottom: 24px;">
+            <label class="form-label" for="Description">نبذة عن المعلم</label>
+            <textarea class="form-control" id="Description" name="Description" rows="4" placeholder="اكتب نبذة مختصرة عن المعلم...">@Model.Description</textarea>
+        </div>
+
+        <div style="display:flex; justify-content: flex-end; gap:10px;">
+            <a href="/Dashboard/Teachers" class="btn" style="background:#f44336; box-shadow:none;">إلغاء</a>
+            <button type="submit" class="btn">💾 حفظ التعديلات</button>
+        </div>
+    </form>
+</div>

@@ -25,6 +25,10 @@ public class HomeController : Controller
         ViewBag.TotalTeachers = await _context.Teachers.CountAsync();
         ViewBag.TotalMemorizers = await _context.Students.CountAsync(s => s.TotalMemorizedPages > 50);
 
+        ViewBag.Teachers = await _context.Teachers
+            .OrderBy(t => t.CreatedAt)
+            .ToListAsync();
+
         return View();
     }
 

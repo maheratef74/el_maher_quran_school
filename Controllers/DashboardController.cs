@@ -58,7 +58,16 @@ namespace ElMaherQuranSchool.Controllers
             string? imageUrl = null;
             if (profileImage != null && profileImage.Length > 0)
             {
-                string uploadsDir = Path.Combine(_hostEnvironment.WebRootPath, "uploads", "students");
+                string webRoot = _hostEnvironment.WebRootPath;
+                // Double wwwroot check (common in some hosting environments)
+                if (webRoot.EndsWith("wwwroot") && Directory.Exists(Path.Combine(webRoot, "..", "wwwroot")) && webRoot.Contains("\\wwwroot\\wwwroot"))
+                {
+                   // This is a sign of nesting. In most cases, we want to save into the parent's wwwroot if available.
+                   // But let's just make sure we save to whatever WebRootPath is actually served.
+                }
+
+                string uploadsDir = Path.Combine(webRoot, "uploads", "students");
+                
                 if (!Directory.Exists(uploadsDir)) Directory.CreateDirectory(uploadsDir);
 
                 string fileName = Guid.NewGuid().ToString() + Path.GetExtension(profileImage.FileName);
@@ -122,7 +131,9 @@ namespace ElMaherQuranSchool.Controllers
                     if (System.IO.File.Exists(oldPath)) System.IO.File.Delete(oldPath);
                 }
 
-                string uploadsDir = Path.Combine(_hostEnvironment.WebRootPath, "uploads", "students");
+                string webRoot = _hostEnvironment.WebRootPath;
+                string uploadsDir = Path.Combine(webRoot, "uploads", "students");
+                
                 if (!Directory.Exists(uploadsDir)) Directory.CreateDirectory(uploadsDir);
 
                 string fileName = Guid.NewGuid().ToString() + Path.GetExtension(profileImage.FileName);
@@ -255,7 +266,7 @@ namespace ElMaherQuranSchool.Controllers
         public async Task<IActionResult> Teachers()
         {
             var teachers = await _context.Teachers
-                .OrderByDescending(t => t.CreatedAt)
+                .OrderBy(t => t.CreatedAt)
                 .ToListAsync();
             return View(teachers);
         }
@@ -267,7 +278,7 @@ namespace ElMaherQuranSchool.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddTeacher(string Name, string PhoneNumber)
+        public async Task<IActionResult> AddTeacher(string Name, string PhoneNumber, string Description, string Role)
         {
             if (string.IsNullOrWhiteSpace(Name))
             {
@@ -278,13 +289,89 @@ namespace ElMaherQuranSchool.Controllers
             var teacher = new Teacher
             {
                 Name = Name,
-                PhoneNumber = PhoneNumber ?? string.Empty
+                PhoneNumber = PhoneNumber ?? string.Empty,
+                Description = Description ?? string.Empty,
+                Role = Role
             };
 
             _context.Teachers.Add(teacher);
             await _context.SaveChangesAsync();
 
             return RedirectToAction("Teachers");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EditTeacher(int id)
+        {
+            var teacher = await _context.Teachers.FindAsync(id);
+            if (teacher == null) return NotFound();
+            return View(teacher);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditTeacher(int id, string Name, string PhoneNumber, string Description, string Role)
+        {
+            var teacher = await _context.Teachers.FindAsync(id);
+            if (teacher == null) return NotFound();
+
+            if (string.IsNullOrWhiteSpace(Name))
+            {
+                ModelState.AddModelError("", "اسم المعلم مطلوب");
+                return View(teacher);
+            }
+
+            teacher.Name = Name;
+            teacher.PhoneNumber = PhoneNumber ?? string.Empty;
+            teacher.Description = Description ?? string.Empty;
+            teacher.Role = Role;
+            teacher.UpdatedAt = DateTime.UtcNow;
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Teachers");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteTeacher(int id)
+        {
+            var teacher = await _context.Teachers.FindAsync(id);
+            if (teacher == null) return NotFound();
+
+            _context.Teachers.Remove(teacher);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Teachers");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EditHalaqa(int id)
+        {
+            var halaqa = await _context.Halaqas.FindAsync(id);
+            if (halaqa == null) return NotFound();
+            ViewBag.Teachers = await _context.Teachers.ToListAsync();
+            return View(halaqa);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditHalaqa(int id, string Name, string Description, string Schedule, int? TeacherId, int TargetPages = 30)
+        {
+            var halaqa = await _context.Halaqas.FindAsync(id);
+            if (halaqa == null) return NotFound();
+
+            if (string.IsNullOrWhiteSpace(Name))
+            {
+                ModelState.AddModelError("", "اسم الحلقة مطلوب");
+                ViewBag.Teachers = await _context.Teachers.ToListAsync();
+                return View(halaqa);
+            }
+
+            halaqa.Name = Name;
+            halaqa.Description = Description ?? string.Empty;
+            halaqa.Schedule = Schedule ?? string.Empty;
+            halaqa.TeacherId = TeacherId;
+            halaqa.TargetPages = TargetPages;
+            halaqa.UpdatedAt = DateTime.UtcNow;
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Halaqas");
         }
 
         [HttpPost]
