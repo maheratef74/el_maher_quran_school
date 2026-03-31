@@ -226,6 +226,63 @@ section{padding:80px 20px;}
 .card-title{font-size:1.3rem;font-weight:800;color:var(--text-dark);margin-bottom:8px;}
 .card-text{font-size:.9rem;color:var(--text-soft);line-height:1.8;}
 
+/* ===== VALUES PYRAMID ===== */
+.values-pyramid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  margin-top: 30px;
+}
+.pyramid-row {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  width: 100%;
+}
+.value-card {
+  background: var(--white);
+  padding: 18px 24px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(45,74,62,0.08);
+  border: 1px solid var(--gold-pale);
+  text-align: center;
+  transition: all 0.3s ease;
+  flex: 0 1 210px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.value-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--gold);
+  box-shadow: 0 8px 24px rgba(45,74,62,0.15);
+}
+.value-icon {
+  font-size: 1.8rem;
+}
+.value-title {
+  font-weight: 800;
+  color: var(--gold);
+  font-size: 0.95rem;
+}
+@@media (max-width: 900px) {
+  .pyramid-row {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .value-card {
+    flex: 1 1 calc(50% - 10px);
+    padding: 14px;
+  }
+}
+@@media (max-width: 500px) {
+  .value-card {
+    flex: 1 1 100%;
+  }
+}
+
 /* ===== ABOUT ===== */
 #about{background:var(--white);}
 .about-intro{
@@ -794,15 +851,15 @@ footer{
   <div class="stats-inner">
     <div class="stat-item">
       <span class="stat-num" data-count="@ViewBag.TotalStudents">0</span>
-      <div class="stat-label">📚 عدد الطلاب المسجلين</div>
+      <div class="stat-label"> عدد الطلاب المسجلين</div>
     </div>
     <div class="stat-item">
       <span class="stat-num" data-count="@ViewBag.TotalHalaqas">0</span>
-      <div class="stat-label">🕌 عدد الحلقات النشطة</div>
+      <div class="stat-label"> عدد الحلقات النشطة</div>
     </div>
     <div class="stat-item">
       <span class="stat-num" data-count="@ViewBag.TotalTeachers">0</span>
-      <div class="stat-label">👨‍🏫 عدد المعلمين</div>
+      <div class="stat-label"> عدد المعلمين</div>
     </div>
   </div>
 </div>
@@ -821,7 +878,7 @@ footer{
         للأطفال والناشئين، تأسست عام 2010م وخدمت آلاف الطلاب على مدار سنوات من العطاء المتواصل.
       </p>
     </div>
-    <div class="grid-3">
+    <div class="grid-2">
       <div class="card fade-in">
         <div class="card-title">رؤيتنا</div>
         <div class="card-text">أن نكون المدرسة الرائدة في تحفيظ القرآن الكريم وتخريج جيل مؤمن حافظ لكتاب الله، متشبّع بقيمه ومبادئه.</div>
@@ -830,9 +887,52 @@ footer{
         <div class="card-title">رسالتنا</div>
         <div class="card-text">تقديم تعليم قرآني متميز في بيئة تربوية آمنة، وتنشئة جيل قادر على التلاوة الصحيحة والحفظ المتقن.</div>
       </div>
-      <div class="card fade-in">
-        <div class="card-title">قيمنا</div>
-        <div class="card-text">الإخلاص والأمانة، احترام الطالب وتقديره، الارتقاء المستمر بجودة التعليم، والتواصل الوثيق مع أولياء الأمور.</div>
+    </div>
+
+    <!-- OUR VALUES PYRAMID -->
+    <div class="section-header fade-in" style="margin-top:60px; margin-bottom:30px;">
+      <h2 class="section-title">قيمنا</h2>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="values-pyramid fade-in">
+      <div class="pyramid-row">
+        <div class="value-card">
+          <div class="value-title">الأمان والسعادة أولاً</div>
+        </div>
+      </div>
+      <div class="pyramid-row">
+        <div class="value-card">
+          <div class="value-title">التفاني والإخلاص</div>
+        </div>
+        <div class="value-card">
+          <div class="value-title">الجدية والمسؤولية</div>
+        </div>
+      </div>
+      <div class="pyramid-row">
+        <div class="value-card">
+          <div class="value-title">التقدير والاحترام</div>
+        </div>
+        <div class="value-card">
+          <div class="value-title">التطوير والابتكار</div>
+        </div>
+        <div class="value-card">
+          <div class="value-title">التوازن والاعتدال</div>
+        </div>
+      </div>
+      <div class="pyramid-row">
+        <div class="value-card">
+          <div class="value-title">المبادرة والطموح</div>
+        </div>
+        <div class="value-card">
+          <div class="value-title">الدقة والانضباط</div>
+        </div>
+        <div class="value-card">
+          <div class="value-title">الجودة والإتقان</div>
+        </div>
+        <div class="value-card">
+          <div class="value-title">خدمة عملاء وتواصل مميز</div>
+        </div>
       </div>
     </div>
   </div>
@@ -858,7 +958,7 @@ footer{
 
       <!-- Step 2 -->
       <div id="step2" class="hidden">
-        <div class="step-title">📚 الخطوة الثانية: اختر الحلقة</div>
+        <div class="step-title"> الخطوة الثانية: اختر الحلقة</div>
         <div class="halaqat-grid" id="halaqatGrid"></div>
       </div>
 
@@ -1431,7 +1531,7 @@ async function showHalaqat(isAutoLoad = false) {
     data.halaqat.forEach(h => {
       const div = document.createElement('div');
       div.className = 'halaqa-card';
-      div.innerHTML = `<div class="halaqa-name">${h.name}</div><div class="halaqa-count">👨‍🏫 ${h.sheikh}</div><div class="halaqa-count">${h.students.length} طالب بالحلقة</div>`;
+      div.innerHTML = `<div class="halaqa-name">${h.name}</div><div class="halaqa-count">${h.sheikh}</div><div class="halaqa-count">${h.students.length} طالب بالحلقة</div>`;
       div.onclick = () => showStudents(h, div);
       grid.appendChild(div);
     });
