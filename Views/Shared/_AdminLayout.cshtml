@@ -91,8 +91,10 @@
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <button class="sidebar-close" onclick="document.getElementById('sidebar').classList.remove('show')">✕</button>
-            <h2>📖 الماهر</h2>
-            <div style="font-size:.8rem;color:var(--text-soft);">لوحة الإدارة</div>
+            <a href="/" style="text-decoration: none; display: flex; flex-direction: column; align-items: center;">
+                <img src="/image/logo_el_maher.svg" alt="مدرسة الماهر بالقرآن" style="height: 120px; width: auto; margin-top: -10px; margin-bottom: -10px;" />
+                <div style="font-size: .9rem; color: var(--gold); font-weight: 800;">لوحة الإدارة</div>
+            </a>
         </div>
         <a href="/Dashboard" class="nav-link @(ViewContext.RouteData.Values["Action"]?.ToString() == "Index" ? "active" : "")">
             <i>📊</i> الرئيسية
