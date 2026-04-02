@@ -156,6 +156,44 @@ namespace ElMaherQuranSchool.Controllers
             return RedirectToAction("Students");
         }
 
+        [HttpPost]
+        public async Task<IActionResult> DeleteStudent(int id)
+        {
+            var student = await _context.Students
+                .Include(s => s.SessionRecords)
+                .Include(s => s.ParentStudents)
+                .FirstOrDefaultAsync(s => s.Id == id);
+
+            if (student == null) return NotFound();
+
+            // Delete associated records first (due to Restrict constraint)
+            if (student.SessionRecords.Any())
+            {
+                _context.SessionRecords.RemoveRange(student.SessionRecords);
+            }
+
+            if (student.ParentStudents.Any())
+            {
+                _context.ParentStudents.RemoveRange(student.ParentStudents);
+            }
+
+            // Delete profile image
+            if (!string.IsNullOrEmpty(student.ProfileImageUrl))
+            {
+                string imagePath = Path.Combine(_hostEnvironment.WebRootPath, student.ProfileImageUrl.TrimStart('/'));
+                if (System.IO.File.Exists(imagePath))
+                {
+                    System.IO.File.Delete(imagePath);
+                }
+            }
+
+            _context.Students.Remove(student);
+            await _context.SaveChangesAsync();
+
+            TempData["Success"] = "تم حذف الطالب بنجاح.";
+            return RedirectToAction("Students");
+        }
+
         [HttpGet]
         public async Task<IActionResult> StudentProgress(int id)
         {
@@ -225,6 +263,7 @@ namespace ElMaherQuranSchool.Controllers
         {
             var halaqas = await _context.Halaqas
                 .Include(h => h.Teacher)
+                .Include(h => h.Students)
                 .OrderByDescending(h => h.CreatedAt)
                 .ToListAsync();
             return View(halaqas);
@@ -371,6 +410,31 @@ namespace ElMaherQuranSchool.Controllers
             halaqa.UpdatedAt = DateTime.UtcNow;
 
             await _context.SaveChangesAsync();
+            return RedirectToAction("Halaqas");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteHalaqa(int id)
+        {
+            var halaqa = await _context.Halaqas
+                .Include(h => h.Students)
+                .FirstOrDefaultAsync(h => h.Id == id);
+
+            if (halaqa == null) return NotFound();
+
+            // Explicitly free all students in this halaqa
+            if (halaqa.Students != null)
+            {
+                foreach (var student in halaqa.Students)
+                {
+                    student.HalaqaId = null;
+                }
+            }
+
+            _context.Halaqas.Remove(halaqa);
+            await _context.SaveChangesAsync();
+
+            TempData["Success"] = "تم حذف الحلقة بنجاح، وتحرير جميع الطلاب المسجلين بها.";
             return RedirectToAction("Halaqas");
         }
 

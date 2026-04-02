@@ -15,10 +15,11 @@
             <thead>
                 <tr>
                     <th>اسم الحلقة</th>
+                    <th>عدد الطلاب</th>
                     <th>الوصف</th>
-                    <th>المعلم</th>
-                    <th>المواعيد</th>
-                    <th>تاريخ الإنشاء</th>
+                    @* <th>المعلم</th> *@
+                    @* <th>المواعيد</th> *@
+                    @* <th>تاريخ الإنشاء</th> *@
                     <th>الإجراءات</th>
                 </tr>
             </thead>
@@ -27,7 +28,13 @@
                 {
                     <tr>
                         <td style="font-weight:bold; color:var(--gold);">@halaqa.Name</td>
+                        <td>
+                            <span style="background:var(--gold-pale); padding:4px 12px; border-radius:50px; font-weight:bold; color:var(--gold);">
+                                @(halaqa.Students?.Count ?? 0) طلاب
+                            </span>
+                        </td>
                         <td>@(string.IsNullOrEmpty(halaqa.Description) ? "-" : halaqa.Description)</td>
+                        @* 
                         <td>
                             @if(halaqa.Teacher != null) 
                             { 
@@ -38,10 +45,17 @@
                                 <span style="color:var(--text-soft);">بدون معلم</span> 
                             }
                         </td>
-                        <td>@(string.IsNullOrEmpty(halaqa.Schedule) ? "-" : halaqa.Schedule)</td>
-                        <td style="font-size: .9rem;">@halaqa.CreatedAt.ToString("yyyy/MM/dd")</td>
+                        *@
+                        @* <td>@(string.IsNullOrEmpty(halaqa.Schedule) ? "-" : halaqa.Schedule)</td> *@
+                        @* <td style="font-size: .9rem;">@halaqa.CreatedAt.ToString("yyyy/MM/dd")</td> *@
                         <td>
-                            <a href="/Dashboard/EditHalaqa?id=@halaqa.Id" class="btn" style="padding: 4px 10px; font-size: .85rem; background: var(--blue-soft);">✏️ تعديل</a>
+                            <div style="display:flex; gap:5px; align-items:center;">
+                                <a href="/Dashboard/EditHalaqa?id=@halaqa.Id" class="btn" style="padding: 4px 10px; font-size: .85rem; background: #e3f2fd; color: black;">✏️ تعديل</a>
+                                <form method="post" action="/Dashboard/DeleteHalaqa" style="display:inline;" onsubmit="return confirmDelete(this, 'هل أنت متأكد من حذف هذه الحلقة؟ سيتم تحرير جميع الطلاب وحذف جميع سجلات الحضور الخاصة بالحلقة.')">
+                                    <input type="hidden" name="id" value="@halaqa.Id" />
+                                    <button type="submit" class="btn" style="padding: 4px 10px; font-size: .85rem; background: #f44336; box-shadow:none;">🗑️ حذف</button>
+                                </form>
+                            </div>
                         </td>
                     </tr>
                 }

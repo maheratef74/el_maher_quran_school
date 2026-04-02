@@ -7,8 +7,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --gold: #2d4a3e; /* Zaity */
-            --gold-light: #3d6151;
+            --gold: #357434;
+            --gold-light: #4a8a49;
             --gold-pale: #e8f0ed;
             --accent-gold: #b8962e;
             --beige: #fefcf7; --beige-dark: #f0e9d6;
@@ -61,6 +61,30 @@
             .sidebar-close { display: block!important; position: absolute; left: 15px; top: 15px; background: none; border: none; font-size: 1.5rem; color: var(--gold); cursor: pointer; }
         }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        .swal2-popup { border-radius: 12px; font-family: 'Tajawal', sans-serif; }
+    </style>
+    <script>
+        function confirmDelete(form, message) {
+            Swal.fire({
+                title: 'هل أنت متأكد؟',
+                text: message || 'لا يمكنك التراجع عن هذا الإجراء!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#f44336',
+                cancelButtonColor: '#4a5c54',
+                confirmButtonText: 'نعم، احذف',
+                cancelButtonText: 'إلغاء',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+            return false;
+        }
+    </script>
 </head>
 <body>
 

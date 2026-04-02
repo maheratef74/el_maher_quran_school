@@ -14,8 +14,8 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
 :root{
-  --gold:#2d4a3e; /* Zaity */
-  --gold-light:#3d6151; /* Zaity Light */
+  --gold:#357434; /* New Main Color */
+  --gold-light:#4a8a49; /* Adjusted Light Version */
   --gold-pale:#e8f0ed; /* Zaity Pale */
   --accent-gold:#b8962e; /* Original Gold for accents */
   --beige:#fafaf7;
@@ -64,7 +64,7 @@ body{font-family:'Tajawal',sans-serif;background:var(--beige);color:var(--text-d
 .nav-inner{
   max-width:1400px;margin:0 auto;
   display:flex;align-items:center;justify-content:space-between;
-  padding:0 20px;height:64px;
+  padding:0 20px;height:70px;
 }
 .nav-logo{
   display:flex;align-items:center;gap:10px;
@@ -791,9 +791,8 @@ footer{
 <!-- NAVBAR -->
 <nav id="navbar">
   <div class="nav-inner">
-    <a href="#hero" class="nav-logo">
-      <div class="logo-icon">📖</div>
-      <span>الماهر بالقرآن</span>
+    <a href="#hero" class="nav-logo" style="display: flex; align-items: center;">
+      <img src="/image/logo_el_maher.svg" alt="مدرسة الماهر بالقرآن" style="height: 150px; width: auto;" />
     </a>
     <ul class="nav-links" id="navLinks">
       <li><a href="#hero">الرئيسية</a></li>
@@ -1450,7 +1449,7 @@ footer{
 </section>
 
 <footer>
-  <div class="footer-logo">📖 مدرسة الماهر بالقرآن</div>
+  <div class="footer-logo"><img src="/image/logo_el_maher.svg" alt="Logo" style="height: 180px; margin-bottom: 5px; display: block; margin-left: auto; margin-right: auto;" /> مدرسة الماهر بالقرآن</div>
   
   <div style="display:flex; justify-content:center; gap:20px; margin-bottom:20px;">
     <a href="https://www.facebook.com/maher.atef.73080" target="_blank" style="color:var(--gold-light); font-size:1.5rem; text-decoration:none;" title="فيسبوك">

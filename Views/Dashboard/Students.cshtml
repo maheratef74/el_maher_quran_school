@@ -41,8 +41,14 @@
                         </td>
                         <td style="font-size: .9rem;">@student.CreatedAt.ToString("yyyy/MM/dd")</td>
                         <td>
-                            <a href="/Dashboard/StudentProgress/@student.Id" style="color:#2196F3; text-decoration:none; font-weight:bold; margin-left: 10px;">المتابعة</a>
-                            <a href="/Dashboard/EditStudent/@student.Id" style="color:var(--gold); text-decoration:none; font-weight:bold;">تعديل</a>
+                            <div style="display:flex; gap:10px; align-items:center;">
+                                <a href="/Dashboard/StudentProgress/@student.Id" style="color:#2196F3; text-decoration:none; font-weight:bold;">المتابعة</a>
+                                <a href="/Dashboard/EditStudent/@student.Id" style="color:black; text-decoration:none; font-weight:bold;">✏️ تعديل</a>
+                                <form method="post" action="/Dashboard/DeleteStudent" style="display:inline;" onsubmit="return confirmDelete(this, 'هل أنت متأكد من حذف هذا الطالب؟ سيتم حذف جميع بياناته وسجلات حضوره بشكل نهائي.')">
+                                    <input type="hidden" name="id" value="@student.Id" />
+                                    <button type="submit" style="background:none; border:none; color:#f44336; font-weight:bold; cursor:pointer; padding:0; font-family:inherit; font-size:inherit;">حذف</button>
+                                </form>
+                            </div>
                         </td>
                     </tr>
                 }

@@ -35,8 +35,8 @@
                         <td style="font-size: .9rem;">@teacher.CreatedAt.ToString("yyyy/MM/dd")</td>
                         <td>
                             <div style="display:flex; gap:5px;">
-                                <a href="/Dashboard/EditTeacher?id=@teacher.Id" class="btn" style="padding: 4px 10px; font-size: .85rem; background: var(--blue-soft);">✏️ تعديل</a>
-                                <form method="post" action="/Dashboard/DeleteTeacher" style="display:inline;" onsubmit="return confirm('هل أنت متأكد من حذف هذا المعلم؟ سيتم فصله عن الحلقات المسجل بها.')">
+                                <a href="/Dashboard/EditTeacher?id=@teacher.Id" class="btn" style="padding: 4px 10px; font-size: .85rem; background: #e3f2fd; color: black;">✏️ تعديل</a>
+                                <form method="post" action="/Dashboard/DeleteTeacher" style="display:inline;" onsubmit="return confirmDelete(this, 'هل أنت متأكد من حذف هذا المعلم؟ سيتم فصله عن الحلقات المسجل بها.')">
                                     <input type="hidden" name="id" value="@teacher.Id" />
                                     <button type="submit" class="btn" style="padding: 4px 10px; font-size: .85rem; background: #f44336; box-shadow:none;">🗑️ حذف</button>
                                 </form>
