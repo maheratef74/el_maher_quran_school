@@ -11,8 +11,8 @@ namespace ElMaherQuranSchool.Models
 
         public bool IsPresent { get; set; } = true;
 
-        [Range(0, 10)]
-        public int AttendanceScore { get; set; } = 0;
+        [Range(5, 100)]
+        public int AttendanceScore { get; set; } = 5;
 
         [Range(0, 100)]
         public int MemorizationScore { get; set; } = 0;

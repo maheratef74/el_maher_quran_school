@@ -11,47 +11,63 @@ namespace ElMaherQuranSchool.Data
             // Apply migrations 
             context.Database.Migrate();
 
-            if (context.Parents.Any())
+            // Unified Teacher Data for seeding
+            var teachersToSeed = new List<(string EmailName, string ArabicName, string Password)>
             {
-                // Already seeded
-                return;
-            }
-
-            // Seed Teacher
-            var teacher = new Teacher { Name = "Sheikh Ahmad", PhoneNumber = "01000000001" };
-            context.Teachers.Add(teacher);
-
-            // Seed Halaqa
-            var halaqa = new Halaqa { Name = "Al-Noor Group", Description = "Evening Quran memorization group", Schedule = "Mon/Wed/Fri 5PM-7PM", Teacher = teacher };
-            context.Halaqas.Add(halaqa);
-
-            // Seed Parent
-            var parent = new Parent { Name = "Ali Mahmoud", PhoneNumber = "01000000002" };
-            context.Parents.Add(parent);
-
-            // Seed Student
-            var student = new Student { Name = "Omar Ali", SerialNumber = "S-1001", TotalMemorizedPages = 150, Halaqa = halaqa };
-            context.Students.Add(student);
-
-            // Link Parent and Student
-            context.ParentStudents.Add(new ParentStudent { Parent = parent, Student = student });
-
-            // Seed Session
-            var session = new Session { SessionDate = DateTime.UtcNow.AddDays(-2), Halaqa = halaqa };
-            context.Sessions.Add(session);
-
-            // Seed SessionRecord (Evaluation/Attendance)
-            var record = new SessionRecord
-            {
-                Session = session,
-                Student = student,
-                IsPresent = true,
-                AttendanceScore = 10,
-                MemorizationScore = 95,
-                TeacherNote = "Omar did an excellent job memorizing Surah Al-Kahf today."
+                ("marwa.tharwat", "مروة ثروت", "marwa123"),
+                ("yasmin.mohammad", "ياسمين محمد", "yasmin123"),
+                ("fatma.ibrahim", "فاطمة إبراهيم", "fatma123"),
+                ("rania.samir", "رانيا سمير", "rania123"),
+                ("shahanda.taj", "شاهندة تاج الدين", "shahanda123"),
+                ("asmaa.ahmad", "أسماء أحمد", "asmaa123"),
+                ("aya.nasser", "آيه ناصر", "aya123"),
+                ("sara.khaled", "سارة خالد", "sara123")
             };
-            context.SessionRecords.Add(record);
 
+            // 1. Seed AdminLogins
+            foreach (var t in teachersToSeed)
+            {
+                string email = $"{t.EmailName}@el-maher.school";
+                var existingUser = context.AdminLogins.FirstOrDefault(u => u.Email == email);
+                if (existingUser == null)
+                {
+                    context.AdminLogins.Add(new AdminLogin { Email = email, Password = t.Password });
+                }
+                else
+                {
+                    // Update password if it's different (ensures our "unique easy passwords" are applied)
+                    if (existingUser.Password != t.Password)
+                    {
+                        existingUser.Password = t.Password;
+                    }
+                }
+            }
+            
+            // Add or update default developer login
+            var adminUser = context.AdminLogins.FirstOrDefault(u => u.Email == "admin@el-maher.school");
+            if (adminUser == null)
+            {
+                context.AdminLogins.Add(new AdminLogin { Email = "admin@el-maher.school", Password = "admin123" });
+            }
+            else
+            {
+                adminUser.Password = "admin123";
+            }
+            context.SaveChanges();
+
+            // 2. Seed Teacher entities (so they appear in Halaqa assignment)
+            foreach (var t in teachersToSeed)
+            {
+                if (!context.Teachers.Any(teacher => teacher.Name == t.ArabicName))
+                {
+                    context.Teachers.Add(new Teacher 
+                    { 
+                        Name = t.ArabicName, 
+                        PhoneNumber = "01000000000",
+                        Role = "Teacher"
+                    });
+                }
+            }
             context.SaveChanges();
         }
     }

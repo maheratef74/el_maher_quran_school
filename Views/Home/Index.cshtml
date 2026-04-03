@@ -348,6 +348,7 @@ section{padding:80px 20px;}
 .student-row{cursor:pointer;}
 .star-badge{color:var(--gold);margin-right:6px;}
 .hidden{display:none!important;}
+.hidden-section{display:none;}
 .step-title{
   font-size:1.2rem;font-weight:800;color:var(--gold);
   margin-bottom:14px;padding-bottom:10px;
@@ -802,10 +803,10 @@ footer{
       <li><a href="#activities">المناشط</a></li>
       <li><a href="#events">الحفلات</a></li>
       <li><a href="#nooraniya">القاعدة النورانية</a></li>
-      <li><a href="#courses">البرنامج</a></li>
-      <li><a href="#knowledge">مصادر المعرفة</a></li>
+      <li><a href="javascript:void(0)" onclick="toggleSection('courses')">البرنامج</a></li>
+      <li><a href="javascript:void(0)" onclick="toggleSection('knowledge')">مصادر المعرفة</a></li>
       <li><a href="#youtube">يوتيوب</a></li>
-      <li><a href="#register">التسجيل</a></li>
+      <li><a href="javascript:void(0)" onclick="toggleSection('register')">التسجيل</a></li>
       <li><a href="#contact">تواصل</a></li>
     </ul>
     <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="قائمة">
@@ -820,10 +821,10 @@ footer{
     <a href="#activities" onclick="closeMobile()">🎯 المناشط والرحلات</a>
     <a href="#events" onclick="closeMobile()">🎉 الحفلات</a>
     <a href="#nooraniya" onclick="closeMobile()">📘 القاعدة النورانية</a>
-    <a href="#courses" onclick="closeMobile()">🎓 البرنامج والدورات</a>
-    <a href="#knowledge" onclick="closeMobile()">📚 مصادر المعرفة</a>
+    <a href="javascript:void(0)" onclick="toggleSection('courses');closeMobile()">🎓 البرنامج والدورات</a>
+    <a href="javascript:void(0)" onclick="toggleSection('knowledge');closeMobile()">📚 مصادر المعرفة</a>
     <a href="#youtube" onclick="closeMobile()">▶️ قناتنا على يوتيوب</a>
-    <a href="#register" onclick="closeMobile()">📝 التسجيل</a>
+    <a href="javascript:void(0)" onclick="toggleSection('register');closeMobile()">📝 التسجيل</a>
     <a href="#contact" onclick="closeMobile()">📞 تواصل معنا</a>
   </div>
 </nav>
@@ -1167,7 +1168,7 @@ footer{
 </section>
 
 <!-- COURSES -->
-<section id="courses">
+<section id="courses" class="hidden-section">
   <div class="section-inner">
     <div class="section-header fade-in">
       <div class="section-tag">التعليم</div>
@@ -1216,7 +1217,7 @@ footer{
 </section>
 
 <!-- KNOWLEDGE -->
-<section id="knowledge">
+<section id="knowledge" class="hidden-section">
   <div class="section-inner">
     <div class="section-header fade-in">
       <div class="section-tag">المعرفة</div>
@@ -1281,7 +1282,7 @@ footer{
 </section>
 
 <!-- REGISTRATION -->
-<section id="register">
+<section id="register" class="hidden-section">
   <div class="section-inner">
     <div class="section-header fade-in">
       <div class="section-tag">الانضمام</div>
@@ -1783,6 +1784,17 @@ window.addEventListener('scroll',()=>{
     if(a.getAttribute('href')==='#'+current) a.classList.add('active');
   });
 },{ passive:true });
+// ===== TOGGLE SECTIONS =====
+function toggleSection(sectionId) {
+  const section = document.getElementById(sectionId);
+  if (section) {
+    section.classList.remove('hidden-section');
+    section.scrollIntoView({ behavior: 'smooth' });
+    
+    // Optional: add a subtle reveal animation
+    section.style.animation = 'fadeDown 0.8s ease both';
+  }
+}
 </script>
 </body>
 </html>

@@ -14,10 +14,10 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.ExpireTimeSpan = TimeSpan.FromHours(8);
     });
 
-// Register DbContext (Using InMemory or local SQL Server for development)
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
+// Register DbContext (Using Production SQL Server)
+builder.Services.AddDbContext<ApplicationDbContext>(options => 
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection") 
-                         ?? "Server=db46168.public.databaseasp.net; Database=db46168; User Id=db46168; Password=D+g3#h6XL-o7; Encrypt=True; TrustServerCertificate=True; MultipleActiveResultSets=True;"));
+                         ?? "Server=db46168.public.databaseasp.net; Database=db46168; User Id=db46168; Password=D+g3#h6XL-o7; Encrypt=True; TrustServerCertificate=True; MultipleActiveResultSets=True; Connect Timeout=60;"));
 
 var app = builder.Build();
 

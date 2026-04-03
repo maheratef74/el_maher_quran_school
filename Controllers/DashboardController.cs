@@ -252,6 +252,9 @@ namespace ElMaherQuranSchool.Controllers
                 TeacherNote = teacherNote ?? string.Empty
             };
 
+            // Update student's point progress
+            student.PointProgress += attendanceScore;
+
             _context.SessionRecords.Add(record);
             await _context.SaveChangesAsync();
 

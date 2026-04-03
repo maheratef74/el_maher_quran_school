@@ -16,6 +16,7 @@ namespace ElMaherQuranSchool.Data
         public DbSet<Halaqa> Halaqas { get; set; }
         public DbSet<Session> Sessions { get; set; }
         public DbSet<SessionRecord> SessionRecords { get; set; }
+        public DbSet<AdminLogin> AdminLogins { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
