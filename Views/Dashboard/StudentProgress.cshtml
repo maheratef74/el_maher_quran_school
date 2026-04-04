@@ -11,8 +11,7 @@
             <div style="color:var(--text-soft); font-weight:600; font-size:.95rem; line-height:1.8;">
                 الرقم التسلسلي: <span style="color:var(--text-dark);">@Model.SerialNumber</span> | 
                 النقاط: <span style="color:#2196F3; font-weight:900;">@Model.PointProgress</span> <button onclick="document.getElementById('pointsModal').style.display='flex'" style="background:none; border:none; cursor:pointer;" title="تحديث النقاط">✏️</button> | 
-                إنجاز الأوجه: <span style="color:#4CAF50; font-weight:900;">@Model.PagesProgress</span> <button onclick="document.getElementById('pagesModal').style.display='flex'" style="background:none; border:none; cursor:pointer;" title="تحديث الأوجه">✏️</button> | 
-                إجمالي الأوجه (قبل الانضمام): <span style="color:var(--gold);">@Model.TotalMemorizedPages</span> | 
+                إجمالي الأوجه: <span style="color:var(--gold); font-weight:900;">@Model.TotalMemorizedPages</span> <button onclick="document.getElementById('totalMemorizedModal').style.display='flex'" style="background:none; border:none; cursor:pointer;" title="تحديث إجمالي الأوجه">✏️</button> | 
                 الحلقة: @(Model.Halaqa != null ? Model.Halaqa.Name : "غير مسجل بحلقة")
             </div>
         </div>
@@ -93,6 +92,7 @@ else
                             <th>الحضور</th>
                             <th>النقاط</th>
                             <th>ملاحظات</th>
+                            <th>إجراءات</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -107,6 +107,12 @@ else
                                 <td><span style="background:var(--beige-dark); padding:4px 8px; border-radius:4px; font-weight:bold;">@record.AttendanceScore</span></td>
                                 <td style="font-size:.85rem; color:var(--text-soft); max-width: 150px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="@record.TeacherNote">
                                     @(string.IsNullOrEmpty(record.TeacherNote) ? "-" : record.TeacherNote)
+                                </td>
+                                <td>
+                                    <form method="post" action="/Dashboard/DeleteSessionRecord" style="display:inline;" onsubmit="return confirmDelete(this, 'هل أنت متأكد من حذف هذا السجل؟ سيتم خصم @record.AttendanceScore نقطة من إجمالي نقاط الطالب.')">
+                                        <input type="hidden" name="recordId" value="@record.Id" />
+                                        <button type="submit" style="background:none; border:none; color:#f44336; cursor:pointer; font-size:1.1rem;" title="حذف السجل">🗑️</button>
+                                    </form>
                                 </td>
                             </tr>
                         }
@@ -147,12 +153,29 @@ else
         <form method="post" action="/Dashboard/UpdatePagesProgress">
             <input type="hidden" name="studentId" value="@Model.Id" />
             <div style="margin-bottom:20px;">
-                <label class="form-label">الأوجه المنجزة: @Model.PagesProgress</label>
-                <input type="number" name="newPages" class="form-control" value="@Model.PagesProgress" required min="0" />
+                <label class="form-label">الأوجه المنجزة: @Model.TotalMemorizedPages</label>
+                <input type="number" name="newPages" class="form-control" value="@Model.TotalMemorizedPages" required min="0" />
             </div>
             <div style="display:flex; justify-content:flex-end; gap:10px;">
                 <button type="button" class="btn" style="background:var(--beige-dark); color:var(--text-dark); box-shadow:none;" onclick="document.getElementById('pagesModal').style.display='none'">إلغاء</button>
                 <button type="submit" class="btn" style="background:#4CAF50;">حفظ</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="totalMemorizedModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000; align-items:center; justify-content:center; backdrop-filter: blur(2px);">
+    <div class="card" style="width:100%; max-width:400px; margin:20px;">
+        <h3 style="margin:0 0 20px; color:var(--text-dark);">تحديث إجمالي الأوجه</h3>
+        <form method="post" action="/Dashboard/UpdateTotalMemorizedPages">
+            <input type="hidden" name="studentId" value="@Model.Id" />
+            <div style="margin-bottom:20px;">
+                <label class="form-label">إجمالي الأوجه: @Model.TotalMemorizedPages</label>
+                <input type="number" name="newTotalPages" class="form-control" value="@Model.TotalMemorizedPages" required min="0" />
+            </div>
+            <div style="display:flex; justify-content:flex-end; gap:10px;">
+                <button type="button" class="btn" style="background:var(--beige-dark); color:var(--text-dark); box-shadow:none;" onclick="document.getElementById('totalMemorizedModal').style.display='none'">إلغاء</button>
+                <button type="submit" class="btn" style="background:var(--gold);">حفظ</button>
             </div>
         </form>
     </div>

@@ -54,28 +54,33 @@ public class HomeController : Controller
             .Where(h => parentHalaqaIds.Contains(h.Id))
             .ToListAsync();
 
-        var halaqatList = halaqas.Select(h => new {
-            id = h.Id,
-            name = h.Name,
-            sheikh = h.Teacher != null ? h.Teacher.Name : "غير محدد",
-            students = h.Students.Select(stu => new {
-                id = stu.Id,
-                name = stu.Name,
-                awjoh = stu.TotalMemorizedPages,
-                targetPages = h.TargetPages,
-                pagesProgress = stu.PagesProgress,
-                pointProgress = stu.PointProgress,
-                isMyChild = stu.ParentPhone == phone,
-                attendance = stu.SessionRecords.Any() ? (stu.SessionRecords.Count(r => r.IsPresent) * 100) / stu.SessionRecords.Count : 100,
-                profileImageUrl = stu.ProfileImageUrl,
-                // Taking last 8 sessions for the modal
-                sessions = stu.SessionRecords.OrderByDescending(sr => sr.Session.SessionDate).Take(8).Select(sr => new {
-                    date = sr.Session.SessionDate.ToString("yyyy/MM/dd"),
-                    isPresent = sr.IsPresent,
-                    score = sr.AttendanceScore,
-                    note = sr.TeacherNote
+        var halaqatList = halaqas.Select(h => {
+            var myStudentsInHalaqa = h.Students.Where(s => s.ParentPhone == phone).ToList();
+            var myStudentsNames = string.Join(" و ", myStudentsInHalaqa.Select(s => s.Name.Split(' ').FirstOrDefault()));
+
+            return new {
+                id = h.Id,
+                name = h.Name,
+                studentNames = myStudentsNames,
+                sheikh = h.Teacher != null ? h.Teacher.Name : "غير محدد",
+                students = h.Students.Select(stu => new {
+                    id = stu.Id,
+                    name = stu.Name,
+                    awjoh = stu.TotalMemorizedPages,
+                    targetPages = h.TargetPages,
+                    points = stu.PointProgress,
+                    isMyChild = stu.ParentPhone == phone,
+                    attendance = stu.SessionRecords.Any() ? (stu.SessionRecords.Count(r => r.IsPresent) * 100) / stu.SessionRecords.Count : 100,
+                    profileImageUrl = stu.ProfileImageUrl,
+                    // Taking last 8 sessions for the modal
+                    sessions = stu.SessionRecords.OrderByDescending(sr => sr.Session.SessionDate).Take(8).Select(sr => new {
+                        date = sr.Session.SessionDate.ToString("yyyy/MM/dd"),
+                        isPresent = sr.IsPresent,
+                        score = sr.AttendanceScore,
+                        note = sr.TeacherNote
+                    }).ToList()
                 }).ToList()
-            }).ToList()
+            };
         }).ToList();
 
         var names = parentStudents.Select(s => s.Name.Split(' ').FirstOrDefault()).ToList();

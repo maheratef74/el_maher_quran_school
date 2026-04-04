@@ -20,7 +20,6 @@ namespace ElMaherQuranSchool.Models
 
         public int TotalMemorizedPages { get; set; } = 0;
         public int PointProgress { get; set; } = 0;
-        public int PagesProgress { get; set; } = 0;
 
         public string? ProfileImageUrl { get; set; }
 

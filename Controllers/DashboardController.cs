@@ -29,12 +29,28 @@ namespace ElMaherQuranSchool.Controllers
             return View();
         }
 
-        public async Task<IActionResult> Students()
+        public async Task<IActionResult> Students(string search, int? halaqaId)
         {
-            var students = await _context.Students
-                .Include(s => s.Halaqa)
+            var query = _context.Students.Include(s => s.Halaqa).AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                query = query.Where(s => s.Name.StartsWith(search) || s.SerialNumber.StartsWith(search));
+            }
+
+            if (halaqaId.HasValue)
+            {
+                query = query.Where(s => s.HalaqaId == halaqaId.Value);
+            }
+
+            var students = await query
                 .OrderByDescending(s => s.CreatedAt)
                 .ToListAsync();
+
+            ViewBag.Halaqas = await _context.Halaqas.ToListAsync();
+            ViewBag.Search = search;
+            ViewBag.HalaqaId = halaqaId;
+
             return View(students);
         }
 
@@ -262,6 +278,29 @@ namespace ElMaherQuranSchool.Controllers
             return RedirectToAction("StudentProgress", new { id = studentId });
         }
 
+        [HttpPost]
+        public async Task<IActionResult> DeleteSessionRecord(int recordId)
+        {
+            var record = await _context.SessionRecords.Include(sr => sr.Student).FirstOrDefaultAsync(sr => sr.Id == recordId);
+            if (record == null) return NotFound();
+
+            int studentId = record.StudentId;
+            var student = record.Student;
+
+            // Minimize students' points
+            if (student != null)
+            {
+                student.PointProgress -= record.AttendanceScore;
+                if (student.PointProgress < 0) student.PointProgress = 0;
+            }
+
+            _context.SessionRecords.Remove(record);
+            await _context.SaveChangesAsync();
+
+            TempData["Success"] = "تم حذف السجل وتحديث نقاط الطالب بنجاح.";
+            return RedirectToAction("StudentProgress", new { id = studentId });
+        }
+
         public async Task<IActionResult> Halaqas()
         {
             var halaqas = await _context.Halaqas
@@ -459,14 +498,14 @@ namespace ElMaherQuranSchool.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdatePagesProgress(int studentId, int newPages)
+        public async Task<IActionResult> UpdateTotalMemorizedPages(int studentId, int newTotalPages)
         {
             var student = await _context.Students.FindAsync(studentId);
             if (student != null)
             {
-                student.PagesProgress = newPages;
+                student.TotalMemorizedPages = newTotalPages;
                 await _context.SaveChangesAsync();
-                TempData["Success"] = "تم تحديث الأوجه بنجاح.";
+                TempData["Success"] = "تم تحديث إجمالي الأوجه بنجاح.";
             }
             else
             {
