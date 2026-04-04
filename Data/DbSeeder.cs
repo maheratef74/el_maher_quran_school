@@ -55,19 +55,12 @@ namespace ElMaherQuranSchool.Data
             }
             context.SaveChanges();
 
-            // 2. Seed Teacher entities (so they appear in Halaqa assignment)
-            foreach (var t in teachersToSeed)
+            if (context.Parents.Any())
             {
-                if (!context.Teachers.Any(teacher => teacher.Name == t.ArabicName))
-                {
-                    context.Teachers.Add(new Teacher 
-                    { 
-                        Name = t.ArabicName, 
-                        PhoneNumber = "01000000000",
-                        Role = "Teacher"
-                    });
-                }
+                // Already seeded demo data
+                return;
             }
+
             context.SaveChanges();
         }
     }

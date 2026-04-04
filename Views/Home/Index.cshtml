@@ -269,18 +269,22 @@ section{padding:80px 20px;}
 }
 @@media (max-width: 900px) {
   .pyramid-row {
-    flex-wrap: wrap;
     gap: 10px;
   }
   .value-card {
-    flex: 1 1 calc(50% - 10px);
-    padding: 14px;
+    flex: 0 1 180px;
+    padding: 12px 15px;
   }
 }
-@@media (max-width: 500px) {
+@@media (max-width: 550px) {
+  .values-pyramid { gap: 8px; }
+  .pyramid-row { gap: 6px; }
   .value-card {
-    flex: 1 1 100%;
+    flex: 0 1 120px;
+    padding: 8px 5px;
+    border-radius: 8px;
   }
+  .value-title { font-size: 0.7rem; line-height: 1.2; word-break: break-word; }
 }
 
 /* ===== ABOUT ===== */
@@ -785,6 +789,113 @@ footer{
   .stats-inner{grid-template-columns:1fr 1fr;}
   .stat-num{font-size:2rem;}
 }
+
+/* ===== QURAN LEVELS STAIRS (Fixed 3D Staircase) ===== */
+.stairs-container {
+  display: flex;
+  flex-direction: column-reverse; /* Level 1 at the bottom */
+  align-items: center;
+  gap: 10px;
+  max-width: 1000px;
+  margin: 60px auto;
+  padding: 40px;
+  position: relative;
+  min-height: 450px;
+}
+.step-box {
+  width: 240px;
+  background: var(--white);
+  border: 1px solid var(--gold-pale);
+  padding: 16px 20px;
+  text-align: center;
+  position: relative;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  cursor: default;
+  /* 3D Step Effect */
+  box-shadow: 
+    -4px 4px 0 var(--gold-pale), 
+    -8px 8px 15px rgba(0,0,0,0.05);
+  border-radius: 8px;
+}
+.step-box::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  border-radius: 8px;
+  background: linear-gradient(to bottom right, rgba(255,255,255,0.8), rgba(255,255,255,0));
+  pointer-events: none;
+}
+.step-box:hover {
+  transform: translateY(-8px) scale(1.05);
+  box-shadow: 
+    -6px 6px 0 var(--gold),
+    -12px 12px 25px rgba(53,116,52,0.15);
+  border-color: var(--gold);
+  z-index: 20;
+}
+.step-title-text {
+  font-weight: 800;
+  color: #357434; /* Main Brand Color */
+  display: block;
+  margin-bottom: 4px;
+  font-size: 1.15rem;
+}
+.step-range {
+  font-size: 0.95rem;
+  color: var(--text-soft);
+  font-weight: 700;
+  direction: ltr;
+  display: inline-block;
+}
+
+/* Diagonal Offsets (Staircase progression: Flush Right to Flush Left) */
+.stairs-container { align-items: flex-start; }
+.step-1 { margin-right: 0; z-index: 1; }
+.step-2 { margin-right: 95px; z-index: 2; }
+.step-3 { margin-right: 190px; z-index: 3; }
+.step-4 { margin-right: 285px; z-index: 4; }
+.step-5 { margin-right: 380px; z-index: 5; }
+.step-6 { margin-right: 475px; z-index: 6; }
+.step-7 { margin-right: 570px; z-index: 7; }
+.step-8 { margin-right: 665px; z-index: 8; }
+.step-9 { margin-right: 760px; z-index: 9; border: 2px solid var(--accent-gold); }
+
+.step-9::after {
+  content: "🏆";
+  position: absolute;
+  top: -15px; right: -15px;
+  font-size: 1.5rem;
+}
+
+@@media (max-width: 768px) {
+  .stairs-container {
+    padding: 20px 5px;
+    gap: 8px;
+  }
+  .step-box {
+    width: 120px;
+    padding: 8px 5px;
+    box-shadow: -2px 2px 0 var(--gold-pale);
+    border-radius: 6px;
+  }
+  .step-box:hover {
+    transform: translateY(-4px) scale(1.03);
+  }
+  .step-title-text { font-size: 0.8rem; }
+  .step-range { font-size: 0.65rem; }
+
+  /* Scaled-down mobile offsets to fit narrow screens (Flush Right to Flush Left) */
+  .stairs-container { align-items: flex-start; }
+  .step-1 { margin-right: 0 !important; }
+  .step-2 { margin-right: 25px !important; }
+  .step-3 { margin-right: 50px !important; }
+  .step-4 { margin-right: 75px !important; }
+  .step-5 { margin-right: 100px !important; }
+  .step-6 { margin-right: 125px !important; }
+  .step-7 { margin-right: 150px !important; }
+  .step-8 { margin-right: 175px !important; }
+  .step-9 { margin-right: 200px !important; }
+}
 </style>
 </head>
 <body>
@@ -799,6 +910,7 @@ footer{
       <li><a href="#hero">الرئيسية</a></li>
       <li><a href="#about">من نحن</a></li>
       <li><a href="#follow">تابع أبناءك</a></li>
+      <li><a href="#quran-levels">مستويات الختم</a></li>
       <li><a href="#camps">المخيمات</a></li>
       <li><a href="#activities">المناشط</a></li>
       <li><a href="#events">الحفلات</a></li>
@@ -817,6 +929,7 @@ footer{
     <a href="#hero" onclick="closeMobile()">🏠 الرئيسية</a>
     <a href="#about" onclick="closeMobile()">💬 من نحن</a>
     <a href="#follow" onclick="closeMobile()">👨‍👩‍👧 تابع أبناءك</a>
+    <a href="#quran-levels" onclick="closeMobile()">📉 مستويات الختم</a>
     <a href="#camps" onclick="closeMobile()">🏕️ المخيمات القرآنية</a>
     <a href="#activities" onclick="closeMobile()">🎯 المناشط والرحلات</a>
     <a href="#events" onclick="closeMobile()">🎉 الحفلات</a>
@@ -981,6 +1094,54 @@ footer{
             <tbody id="studentsBody"></tbody>
           </table>
         </div>
+      </div>
+</section>
+
+<!-- QURAN LEVELS -->
+<section id="quran-levels" style="background:var(--white);">
+  <div class="section-inner">
+    <div class="section-header fade-in">
+      <div class="section-tag">التنافس</div>
+      <h2 class="section-title">مستويات ختم القرآن في أطفالنا</h2>
+      <p style="color:var(--text-mid); font-size:1.15rem; margin-top:10px; font-weight:700;">(وفي ذلك فليتنافس المتنافسون)</p>
+      <div class="section-line"></div>
+    </div>
+    <div class="stairs-container fade-in">
+      <div class="step-box step-1">
+        <span class="value-title">غراس</span>
+        <span class="value-title">1 : 20</span>
+      </div>
+      <div class="step-box step-2">
+        <span class="value-title">الأبرار</span>
+        <span class="value-title">21 : 40</span>
+      </div>
+      <div class="step-box step-3">
+        <span class="value-title">حامل المسك</span>
+        <span class="value-title">41 : 60</span>
+      </div>
+      <div class="step-box step-4">
+        <span class="value-title">نور القرآن</span>
+        <span class="value-title">61 : 100</span>
+      </div>
+      <div class="step-box step-5">
+        <span class="value-title">السفرة</span>
+        <span class="value-title">101 : 150</span>
+      </div>
+      <div class="step-box step-6">
+        <span class="value-title">صفوة الحفاظ</span>
+        <span class="value-title">151 : 200</span>
+      </div>
+      <div class="step-box step-7">
+        <span class="value-title">حفاظ الذكر</span>
+        <span class="value-title">201 : 300</span>
+      </div>
+      <div class="step-box step-8">
+        <span class="value-title">تيجان النور</span>
+        <span class="value-title">301 : 450</span>
+      </div>
+      <div class="step-box step-9">
+        <span class="value-title">تاج الوقار</span>
+        <span class="value-title">451 : 604</span>
       </div>
     </div>
   </div>
