@@ -10,8 +10,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>مدرسة الماهر بالقرآن</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&family=Amiri:wght@400;700&family=Aref+Ruqaa:wght@400;700&display=swap" rel="stylesheet"/>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#357434">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="apple-touch-icon" href="/image/app_logo.svg">
 <style>
 :root{
   --gold:#357434; /* New Main Color */
@@ -1099,7 +1105,9 @@ footer{
     <div class="section-header fade-in">
       <div class="section-tag">التنافس</div>
       <h2 class="section-title">مراحل ختم القرآن في حلقاتنا</h2>
-      <p style="color:var(--text-mid); font-size:1.15rem; margin-top:10px; font-weight:700;">(وفي ذلك فليتنافس المتنافسون)</p>
+      <p style="color:var(--text-mid); font-size:1.8rem; margin-top:10px; font-weight:400; font-family: 'Aref Ruqaa', serif;">
+        (وفي ذلك فليتنافس المتنافسون)
+      </p>
       <div class="section-line"></div>
     </div>
     <div class="stairs-container fade-in">
@@ -1647,12 +1655,30 @@ document.addEventListener('DOMContentLoaded', () => {
   if(savedPhone) {
     document.getElementById('phoneInput').value = savedPhone;
   }
+  
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js').then(reg => {
+        console.log('ServiceWorker registered');
+      }).catch(err => {
+        console.error('ServiceWorker registration failed', err);
+      });
+    });
+  }
 });
 
 async function showHalaqat(isAutoLoad = false) {
   const phone = document.getElementById('phoneInput').value.trim();
   if(!phone){
-      if(!isAutoLoad) alert('الرجاء إدخال رقم الهاتف'); 
+      if(!isAutoLoad) {
+        Swal.fire({
+          title: 'تنبيه!',
+          text: 'الرجاء إدخال رقم الهاتف المسجل لتتمكن من متابعة أبنائك.',
+          icon: 'warning',
+          confirmButtonText: 'حسناً',
+          confirmButtonColor: 'var(--gold)'
+        });
+      }
       return;
   }
   currentPhone = phone;
@@ -1663,9 +1689,16 @@ async function showHalaqat(isAutoLoad = false) {
     const data = await res.json();
 
     if(!data.success) {
-      if(!isAutoLoad) alert('لم يتم العثور على أبناء مسجلين بهذا الرقم.');
+      if(!isAutoLoad) {
+        Swal.fire({
+          title: 'عذراً!',
+          text: 'لم يتم العثور على أبناء مسجلين بهذا الرقم في نظامنا. يرجى التأكد من الرقم أو التواصل مع إدارة المدرسة.',
+          icon: 'info',
+          confirmButtonText: 'حسناً',
+          confirmButtonColor: 'var(--gold)'
+        });
+      }
       else {
-          // If auto-loaded but phone was somehow wrong or deleted from DB, clear it out.
           localStorage.removeItem('parentPhone');
           document.getElementById('phoneInput').value = "";
       }

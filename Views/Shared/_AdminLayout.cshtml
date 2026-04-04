@@ -4,6 +4,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - لوحة الإدارة</title>
+    <link rel="manifest" href="/manifest-admin.json">
+    <meta name="theme-color" content="#357434">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <link rel="apple-touch-icon" href="/image/logo_el_maher.svg">
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -110,6 +115,12 @@
         <a href="/Dashboard/Teachers" class="nav-link @(ViewContext.RouteData.Values["Action"]?.ToString() == "Teachers" ? "active" : "")">
             <i>👨‍🏫</i> المعلمون
         </a>
+        
+        <div id="installContainer" style="display:none; padding:20px; border-top:1px solid var(--beige-dark); margin-top:auto;">
+            <button id="installBtn" class="btn" style="width:100%; font-size:.85rem; padding:10px; background:var(--gold-pale); color:var(--gold); border:2px solid var(--gold); box-shadow:none;">
+                📲 تثبيت الإدارة كطبيق
+            </button>
+        </div>
        
     </aside>
     <div class="sidebar-overlay" id="overlay" onclick="document.getElementById('sidebar').classList.remove('show')"></div>
@@ -130,5 +141,37 @@
         </div>
     </main>
 
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js').then(reg => {
+                    console.log('Admin ServiceWorker registered');
+                }).catch(err => {
+                    console.error('Admin ServiceWorker registration failed', err);
+                });
+            });
+        }
+
+        let deferredPrompt;
+        const installBtn = document.getElementById('installBtn');
+        const installContainer = document.getElementById('installContainer');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            installContainer.style.display = 'block';
+
+            installBtn.addEventListener('click', () => {
+                installContainer.style.display = 'none';
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('Admin accepted install');
+                    }
+                    deferredPrompt = null;
+                });
+            });
+        });
+    </script>
 </body>
 </html>

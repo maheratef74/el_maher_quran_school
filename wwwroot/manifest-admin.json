@@ -1,0 +1,17 @@
+{
+  "name": "لوحة تحكم الماهر",
+  "short_name": "الإدارة",
+  "description": "لوحة تحكم معلمي وإداري مدرسة الماهر بالقرآن.",
+  "start_url": "/Dashboard",
+  "display": "standalone",
+  "background_color": "#fefcf7",
+  "theme_color": "#357434",
+  "icons": [
+    {
+      "src": "/image/logo_el_maher.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

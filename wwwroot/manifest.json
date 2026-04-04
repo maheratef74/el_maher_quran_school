@@ -1,0 +1,17 @@
+{
+  "name": "مدرسة الماهر بالقرآن",
+  "short_name": "الماهر",
+  "description": "منصة مدرسة الماهر لمتابعة حفظ القرآن الكريم وتطور الطلاب.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fefcf7",
+  "theme_color": "#357434",
+  "icons": [
+    {
+      "src": "/image/app_logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
