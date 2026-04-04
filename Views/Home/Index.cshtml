@@ -805,44 +805,39 @@ footer{
 .step-box {
   width: 240px;
   background: var(--white);
-  border: 1px solid var(--gold-pale);
-  padding: 16px 20px;
+  border: 1.5px solid var(--gold);
+  padding: 18px 24px;
   text-align: center;
   position: relative;
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transition: all 0.3s ease;
   cursor: default;
-  /* 3D Step Effect */
-  box-shadow: 
-    -4px 4px 0 var(--gold-pale), 
-    -8px 8px 15px rgba(0,0,0,0.05);
-  border-radius: 8px;
+  /* Blocky 3D Step Effect - Matching user image */
+  box-shadow: -10px 10px 0 #2e592e; 
+  border-radius: 12px;
 }
 .step-box::before {
-  content: "";
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  border-radius: 8px;
-  background: linear-gradient(to bottom right, rgba(255,255,255,0.8), rgba(255,255,255,0));
-  pointer-events: none;
+  display: none; /* Removed gradient per clean look in image */
 }
 .step-box:hover {
-  transform: translateY(-8px) scale(1.05);
-  box-shadow: 
-    -6px 6px 0 var(--gold),
-    -12px 12px 25px rgba(53,116,52,0.15);
-  border-color: var(--gold);
+  /* Static step - no hover movement per user request */
   z-index: 20;
+}
+.step-box .value-title {
+  font-weight: 800;
+  color: #357434; /* Updated to user requested color ONLY for staircase */
+  display: block;
+  margin-bottom: 4px;
 }
 .step-title-text {
   font-weight: 800;
-  color: #357434; /* Main Brand Color */
+  color: #357434; 
   display: block;
   margin-bottom: 4px;
   font-size: 1.15rem;
 }
 .step-range {
   font-size: 0.95rem;
-  color: var(--text-soft);
+  color: #357434;
   font-weight: 700;
   direction: ltr;
   display: inline-block;
@@ -874,12 +869,13 @@ footer{
   }
   .step-box {
     width: 120px;
-    padding: 8px 5px;
-    box-shadow: -2px 2px 0 var(--gold-pale);
-    border-radius: 6px;
+    padding: 10px 5px;
+    box-shadow: -5px 5px 0 #2e592e;
+    border: 1px solid var(--gold);
+    border-radius: 8px;
   }
   .step-box:hover {
-    transform: translateY(-4px) scale(1.03);
+    transform: none;
   }
   .step-title-text { font-size: 0.8rem; }
   .step-range { font-size: 0.65rem; }
@@ -1102,46 +1098,46 @@ footer{
   <div class="section-inner">
     <div class="section-header fade-in">
       <div class="section-tag">التنافس</div>
-      <h2 class="section-title">مستويات ختم القرآن في أطفالنا</h2>
+      <h2 class="section-title">مراحل ختم القرآن في حلقاتنا</h2>
       <p style="color:var(--text-mid); font-size:1.15rem; margin-top:10px; font-weight:700;">(وفي ذلك فليتنافس المتنافسون)</p>
       <div class="section-line"></div>
     </div>
     <div class="stairs-container fade-in">
       <div class="step-box step-1">
         <span class="value-title">غراس</span>
-        <span class="value-title">1 : 20</span>
+        <span class="value-title">1 : 20 وجه </span>
       </div>
       <div class="step-box step-2">
         <span class="value-title">الأبرار</span>
-        <span class="value-title">21 : 40</span>
+        <span class="value-title">21 : 40 وجه </span>
       </div>
       <div class="step-box step-3">
         <span class="value-title">حامل المسك</span>
-        <span class="value-title">41 : 60</span>
+        <span class="value-title">41 : 60 وجه </span>
       </div>
       <div class="step-box step-4">
         <span class="value-title">نور القرآن</span>
-        <span class="value-title">61 : 100</span>
+        <span class="value-title">61 : 100 وجه </span>
       </div>
       <div class="step-box step-5">
         <span class="value-title">السفرة</span>
-        <span class="value-title">101 : 150</span>
+        <span class="value-title">101 : 150 وجه </span>
       </div>
       <div class="step-box step-6">
         <span class="value-title">صفوة الحفاظ</span>
-        <span class="value-title">151 : 200</span>
+        <span class="value-title">151 : 200 وجه </span>
       </div>
       <div class="step-box step-7">
         <span class="value-title">حفاظ الذكر</span>
-        <span class="value-title">201 : 300</span>
+        <span class="value-title">201 : 300 وجه </span>
       </div>
       <div class="step-box step-8">
         <span class="value-title">تيجان النور</span>
-        <span class="value-title">301 : 450</span>
+        <span class="value-title">301 : 450 وجه </span>
       </div>
       <div class="step-box step-9">
         <span class="value-title">تاج الوقار</span>
-        <span class="value-title">451 : 604</span>
+        <span class="value-title">451 : 604 وجه </span>
       </div>
     </div>
   </div>
