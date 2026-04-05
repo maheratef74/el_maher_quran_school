@@ -494,13 +494,37 @@ section{padding:80px 20px;}
 /* ===== ACTIVITIES ===== */
 #activities{background:var(--beige);}
 .gallery-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
-  gap:18px;
+  display: flex;
+  overflow-x: auto;
+  gap: 18px;
+  padding: 10px 5px 25px;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: var(--gold) transparent;
+}
+.gallery-grid::-webkit-scrollbar {
+  height: 6px;
+}
+.gallery-grid::-webkit-scrollbar-track {
+  background: var(--beige-dark);
+  border-radius: 10px;
+}
+.gallery-grid::-webkit-scrollbar-thumb {
+  background: var(--gold);
+  border-radius: 10px;
 }
 .gallery-item{
+  flex: 0 0 300px;
+  scroll-snap-align: start;
   border-radius:var(--radius);overflow:hidden;
   position:relative;box-shadow:var(--shadow);cursor:pointer;
+}
+
+@@media (max-width: 768px) {
+  .gallery-item {
+    flex: 0 0 260px;
+  }
 }
 .gallery-thumb{
   height:200px;
@@ -957,6 +981,7 @@ footer{
     <div class="hero-btns">
       <a href="#follow" class="btn-gold"> تابع أبناءك</a>
       <a href="#register" class="btn-outline"> سجّل الآن</a>
+      <button id="pwa-install-btn" class="btn-outline" style="display:none;">📲 تثبيت التطبيق</button>
     </div>
   </div>
 </section>
@@ -1066,8 +1091,8 @@ footer{
       <div id="step1">
         <div class="step-title">🔍 الخطوة الأولى: أدخل رقم الهاتف</div>
         <div class="input-group">
-          <input type="tel" id="phoneInput" placeholder="01xxxxxxxxx" maxlength="12" dir="ltr"/>
-          <button class="btn-gold" onclick="showHalaqat()">عرض الأبناء</button>
+          <input type="tel" id="phoneInput" placeholder="01xxxxxxxxx" maxlength="11" dir="ltr"/>
+          <button class="btn-gold" onclick="showHalaqat()">رؤية تقدم الأبناء</button>
         </div>
       </div>
 
@@ -1218,27 +1243,32 @@ footer{
       <div class="section-line"></div>
     </div>
     <div class="gallery-grid">
-      <div class="gallery-item fade-in">
-        <div class="gallery-thumb">
-          <img src="/image/649f042e-74a7-44e4-ad88-f394f14bdfca.jfif" alt="نشاط قرآني" loading="lazy" onerror="this.style.display='none'"/>
-          <div class="gallery-thumb-overlay"></div>
+      @{
+        var images = new[] { 
+          new { src = "/image/a1.jfif", alt = "نشاط 1" },
+          new { src = "/image/a2.jpeg", alt = "نشاط 2" },
+          new { src = "/image/a3.jpeg", alt = "نشاط 3" },
+          new { src = "/image/a4.jpeg", alt = "نشاط 4" },
+          new { src = "/image/a5.jpeg", alt = "نشاط 5" },
+          new { src = "/image/a6.jpeg", alt = "نشاط 6" },
+          new { src = "/image/a7.jpeg", alt = "نشاط 7" },
+          new { src = "/image/a8.jpeg", alt = "نشاط 8" },
+          new { src = "/image/a9.jpeg", alt = "نشاط 9" },
+          new { src = "/image/a10.jfif", alt = "نشاط 10" },
+          new { src = "/image/a11.jfif", alt = "نشاط 11" },
+          new { src = "/image/a12.jpeg", alt = "نشاط 12" },
+          new { src = "/image/a13.jpeg", alt = "نشاط 13" }
+        };
+      }
+      @foreach(var img in images) {
+        <div class="gallery-item fade-in">
+          <div class="gallery-thumb">
+            <img src="@img.src" alt="@img.alt" loading="lazy" onerror="this.style.display='none'"/>
+            <div class="gallery-thumb-overlay"></div>
+          </div>
+          <div class="gallery-caption">من أنشطة طلابنا</div>
         </div>
-        <div class="gallery-caption">من أنشطة طلابنا</div>
-      </div>
-      <div class="gallery-item fade-in">
-        <div class="gallery-thumb">
-          <img src="/image/c8f9f3dd-a5ec-4780-a3fd-0cba529643d2.jfif" alt="نشاط قرآني" loading="lazy" onerror="this.style.display='none'"/>
-          <div class="gallery-thumb-overlay"></div>
-        </div>
-        <div class="gallery-caption">من أنشطة طلابنا</div>
-      </div>
-      <div class="gallery-item fade-in">
-        <div class="gallery-thumb">
-          <img src="/image/e94cfa90-ad2a-4212-95d0-85eac373052d.jfif" alt="نشاط قرآني" loading="lazy" onerror="this.style.display='none'"/>
-          <div class="gallery-thumb-overlay"></div>
-        </div>
-        <div class="gallery-caption">من أنشطة طلابنا</div>
-      </div>
+      }
     </div>
   </div>
 </section>
@@ -1665,6 +1695,27 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
   }
+
+  let deferredPrompt;
+  const pwaInstallBtn = document.getElementById('pwa-install-btn');
+
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    if (pwaInstallBtn) pwaInstallBtn.style.display = 'inline-block';
+
+    pwaInstallBtn.addEventListener('click', () => {
+      if (!deferredPrompt) return;
+      pwaInstallBtn.style.display = 'none';
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then((choiceResult) => {
+        if (choiceResult.outcome === 'accepted') {
+          console.log('User accepted the PWA install prompt');
+        }
+        deferredPrompt = null;
+      });
+    });
+  });
 });
 
 async function showHalaqat(isAutoLoad = false) {
@@ -1715,13 +1766,20 @@ async function showHalaqat(isAutoLoad = false) {
 
     const info = document.createElement('div');
     info.style.cssText = "background:var(--gold-pale);border-radius:10px;padding:14px 18px;margin-bottom:16px;font-size:.9rem;color:var(--text-mid);";
-    info.innerHTML = `مرحباً بك <strong>${data.parentName}</strong> 👋`;
+    info.innerHTML = `<span style="font-size:1.2rem; display:block; margin-bottom:5px; color:var(--gold);">${data.parentName}</span>`;
     grid.appendChild(info);
 
     data.halaqat.forEach(h => {
       const div = document.createElement('div');
       div.className = 'halaqa-card';
-      div.innerHTML = `<div class="halaqa-name">${h.name}</div><div class="halaqa-count">${h.studentNames}</div><div class="halaqa-count">${h.students.length} طالب بالحلقة</div>`;
+      let countLabel = "طالب/طالبة";
+      const len = h.students.length;
+      if (len >= 3 && len <= 10) {
+          countLabel = "طلاب";
+      } else if (len > 10) {
+          countLabel = "طالب/طالبة";
+      }
+      div.innerHTML = `<div class="halaqa-name">${h.name}</div><div class="halaqa-count">${h.studentNames}</div><div class="halaqa-count">${len} ${countLabel} بالحلقة</div>`;
       div.onclick = () => showStudents(h, div);
       grid.appendChild(div);
     });
@@ -1751,9 +1809,10 @@ function showStudents(halaqaObj, cardEl) {
       if(rank===2) badge = `<div class="rank-badge rank-2">🥈</div>`;
       if(rank===3) badge = `<div class="rank-badge rank-3">🥉</div>`;
       
+      const genderLabel = s.gender === "Female" ? "الطالبة" : "الطالب";
       const tr = document.createElement('tr');
       tr.className = `student-row${s.isMyChild ? ' my-child' : ''}`;
-      tr.innerHTML = `<td>${badge}</td><td>${s.isMyChild ? '⭐ ' : ''}<strong>${s.name}</strong></td><td>${s.awjoh} وجهاً</td><td>${s.points}</td>`;
+      tr.innerHTML = `<td>${badge}</td><td>${s.isMyChild ? '⭐ ' : ''}<span style="font-size:.75rem; color:var(--text-soft); font-weight:normal;">${genderLabel}</span><br><strong>${s.name}</strong></td><td>${s.awjoh} وجهاً</td><td>${s.points}</td>`;
       
       if (s.isMyChild) {
         tr.onclick = () => openModal(s, rank);
@@ -1776,7 +1835,8 @@ function backToHalaqat(){
 function openModal(student, rank){
   const modal = document.getElementById('studentModal');
   const body = document.getElementById('modalBody');
-  document.getElementById('modalTitle').textContent = 'ملف الطالب';
+  const genderLabel = student.gender === "Female" ? "الطالبة" : "الطالب";
+  document.getElementById('modalTitle').textContent = 'ملف ' + genderLabel;
   
   const targetAwjoh = student.targetPages && student.targetPages > 0 ? student.targetPages : 30;
   const pct = Math.round((student.awjoh / targetAwjoh) * 100);
@@ -1787,10 +1847,8 @@ function openModal(student, rank){
   let latestNote = "لا توجد ملاحظات مسجلة بعد.";
 
   if (student.sessions && student.sessions.length > 0) {
-    // Reverse so the oldest is on the left of chart, newest on right
     chartDates = student.sessions.map(r => r.date).reverse();
     chartScores = student.sessions.map(r => r.score).reverse();
-
 
     attendanceRows = student.sessions.map(s => {
       return `<tr><td>${s.date}</td><td><span class="attendance-dot ${s.isPresent?'dot-present':'dot-absent'}"></span> ${s.isPresent?'حاضر':'غائب'}</td></tr>`;
@@ -1802,7 +1860,7 @@ function openModal(student, rank){
     }
   }
   
-  let badgeText = rank===1?'🥇 الطالب الأول':rank===2?'🥈 متفوق':rank===3?'🥉 ممتاز':(student.awjoh>=15?'⭐ حافظ متميز':'📖 طالب مجتهد');
+  let badgeText = rank===1?`🥇 ${genderLabel} الأول`:rank===2?'🥈 متفوق':rank===3?'🥉 ممتاز':(student.awjoh>=15?'⭐ حافظ متميز':`📖 ${genderLabel} مجتهد`);
   
   let avatarHtml = `<div class="modal-avatar">📖</div>`;
   if (student.profileImageUrl) {

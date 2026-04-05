@@ -19,6 +19,18 @@
         </div>
 
         <div style="margin-bottom: 20px;">
+            <label class="form-label">النوع</label>
+            <div style="display:flex; gap:20px; align-items:center;">
+                <label style="cursor:pointer; display:flex; align-items:center; gap:5px;">
+                    <input type="radio" name="gender" value="Male" @(Model.Gender == ElMaherQuranSchool.Models.Gender.Male ? "checked" : "") /> طالب
+                </label>
+                <label style="cursor:pointer; display:flex; align-items:center; gap:5px;">
+                    <input type="radio" name="gender" value="Female" @(Model.Gender == ElMaherQuranSchool.Models.Gender.Female ? "checked" : "") /> طالبة
+                </label>
+            </div>
+        </div>
+
+        <div style="margin-bottom: 20px;">
             <label class="form-label" for="profileImage">تغيير الصورة الشخصية</label>
             @if (!string.IsNullOrEmpty(Model.ProfileImageUrl))
             {

@@ -16,9 +16,9 @@
                 <tr>
                     <th>اسم المعلم</th>
                     <th>المسمى الوظيفي</th>
-                    <th>رقم الجوال</th>
                     <th>نبذة</th>
                     <th>تاريخ التسجيل</th>
+                    <th>الترتيب</th>
                     <th>الإجراءات</th>
                 </tr>
             </thead>
@@ -28,11 +28,11 @@
                     <tr>
                         <td style="font-weight:bold; color:var(--text-dark);">@teacher.Name</td>
                         <td style="font-size: .9rem; color:var(--gold);">@(string.IsNullOrEmpty(teacher.Role) ? "-" : teacher.Role)</td>
-                        <td style="direction: ltr; text-align: right;">@(string.IsNullOrEmpty(teacher.PhoneNumber) ? "-" : teacher.PhoneNumber)</td>
-                        <td style="font-size: .85rem; color:var(--text-soft); max-width: 250px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                        <td style="font-size: .85rem; color:var(--text-soft); max-width: 250px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="@teacher.Description">
                             @(string.IsNullOrEmpty(teacher.Description) ? "-" : teacher.Description)
                         </td>
                         <td style="font-size: .9rem;">@teacher.CreatedAt.ToString("yyyy/MM/dd")</td>
+                        <td style="font-weight:bold; color:var(--text-dark); text-align:center;">@teacher.SortOrder</td>
                         <td>
                             <div style="display:flex; gap:5px;">
                                 <a href="/Dashboard/EditTeacher?id=@teacher.Id" class="btn" style="padding: 4px 10px; font-size: .85rem; background: #e3f2fd; color: black;">✏️ تعديل</a>

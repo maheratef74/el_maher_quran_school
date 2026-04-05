@@ -26,7 +26,8 @@ public class HomeController : Controller
         ViewBag.TotalMemorizers = await _context.Students.CountAsync(s => s.TotalMemorizedPages > 50);
 
         ViewBag.Teachers = await _context.Teachers
-            .OrderBy(t => t.CreatedAt)
+            .OrderBy(t => t.SortOrder)
+            .ThenBy(t => t.Name)
             .ToListAsync();
 
         return View();
@@ -66,13 +67,13 @@ public class HomeController : Controller
                 students = h.Students.Select(stu => new {
                     id = stu.Id,
                     name = stu.Name,
+                    gender = stu.Gender.ToString(),
                     awjoh = stu.TotalMemorizedPages,
                     targetPages = h.TargetPages,
                     points = stu.PointProgress,
                     isMyChild = stu.ParentPhone == phone,
                     attendance = stu.SessionRecords.Any() ? (stu.SessionRecords.Count(r => r.IsPresent) * 100) / stu.SessionRecords.Count : 100,
                     profileImageUrl = stu.ProfileImageUrl,
-                    // Taking last 8 sessions for the modal
                     sessions = stu.SessionRecords.OrderByDescending(sr => sr.Session.SessionDate).Take(8).Select(sr => new {
                         date = sr.Session.SessionDate.ToString("yyyy/MM/dd"),
                         isPresent = sr.IsPresent,
@@ -84,9 +85,16 @@ public class HomeController : Controller
         }).ToList();
 
         var names = parentStudents.Select(s => s.Name.Split(' ').FirstOrDefault()).ToList();
-        var parentName = names.Count > 1 
-            ? "ولي أمر الطلاب " + string.Join(" و ", names) 
-            : "ولي أمر الطالب " + names.FirstOrDefault();
+        var namesText = names.Count > 1 ? string.Join(" و ", names) : names.FirstOrDefault();
+        
+        string prefix = "الطلاب";
+        if (parentStudents.Count == 1)
+        {
+            prefix = parentStudents[0].Gender == ElMaherQuranSchool.Models.Gender.Female ? "الطالبة" : "الطالب";
+        }
+        
+        var parentName = $"مرحبا ولي أمر {prefix} ({namesText}) . جعل الله أبناءك من أهل القرآن";
+        
 
         return Json(new {
             success = true,

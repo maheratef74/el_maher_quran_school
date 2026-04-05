@@ -51,7 +51,7 @@
                     <th>اسم الطالب</th>
                     <th>إجمالي الأوجه</th>
                     <th>الحلقة</th>
-                    <th>تاريخ التسجيل</th>
+                    <th>رقم ولي الامر</th>
                     <th>إجراءات</th>
                 </tr>
             </thead>
@@ -72,7 +72,15 @@
                                 <span style="color:var(--text-soft);">غير مسجل</span> 
                             }
                         </td>
-                        <td style="font-size: .9rem;">@student.CreatedAt.ToString("yyyy/MM/dd")</td>
+                        <td style="direction: ltr; text-align: right; font-weight:bold;">
+                            @{
+                                var cleanPhone = student.ParentPhone.Replace(" ", "").Replace("+", "").Replace("-", "");
+                                if (cleanPhone.StartsWith("0")) { cleanPhone = "20" + cleanPhone.Substring(1); }
+                            }
+                            <a href="https://wa.me/@cleanPhone" target="_blank" style="text-decoration:none; color:inherit;">
+                                🟢 @student.ParentPhone
+                            </a>
+                        </td>
                         <td>
                             <div style="display:flex; gap:10px; align-items:center;">
                                 <a href="/Dashboard/StudentProgress/@student.Id" style="color:#2196F3; text-decoration:none; font-weight:bold;">المتابعة</a>
@@ -112,12 +120,16 @@
         for (let i = 0; i < rows.length; i++) {
             const serialCell = rows[i].getElementsByTagName('td')[0];
             const nameCell = rows[i].getElementsByTagName('td')[1];
+            const phoneCell = rows[i].getElementsByTagName('td')[4];
             
             if (serialCell && nameCell) {
                 const serialText = serialCell.textContent || serialCell.innerText;
                 const nameText = nameCell.textContent || nameCell.innerText;
+                const phoneText = phoneCell ? (phoneCell.textContent || phoneCell.innerText) : "";
                 
-                if (serialText.toLowerCase().trim().startsWith(filter) || nameText.toLowerCase().trim().startsWith(filter)) {
+                if (serialText.toLowerCase().trim().startsWith(filter) || 
+                    nameText.toLowerCase().trim().startsWith(filter) || 
+                    phoneText.trim().includes(filter)) {
                     rows[i].style.display = "";
                     foundAny = true;
                 } else {

@@ -62,7 +62,7 @@ namespace ElMaherQuranSchool.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddStudent(string Name, int? HalaqaId, int TotalMemorizedPages = 0, string ParentPhone = "", IFormFile? profileImage = null)
+        public async Task<IActionResult> AddStudent(string Name, int? HalaqaId, Gender gender, int TotalMemorizedPages = 0, string ParentPhone = "", IFormFile? profileImage = null)
         {
             if (string.IsNullOrWhiteSpace(Name))
             {
@@ -107,7 +107,8 @@ namespace ElMaherQuranSchool.Controllers
                 SerialNumber = serialNumber,
                 TotalMemorizedPages = TotalMemorizedPages,
                 HalaqaId = HalaqaId,
-                ProfileImageUrl = imageUrl
+                ProfileImageUrl = imageUrl,
+                Gender = gender
             };
 
             _context.Students.Add(student);
@@ -126,7 +127,7 @@ namespace ElMaherQuranSchool.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditStudent(int id, string Name, int? HalaqaId, int TotalMemorizedPages, string ParentPhone, IFormFile? profileImage)
+        public async Task<IActionResult> EditStudent(int id, string Name, int? HalaqaId, Gender gender, int TotalMemorizedPages, string ParentPhone, IFormFile? profileImage)
         {
             var student = await _context.Students.FindAsync(id);
             if (student == null) return NotFound();
@@ -166,6 +167,7 @@ namespace ElMaherQuranSchool.Controllers
             student.ParentPhone = ParentPhone ?? string.Empty;
             student.HalaqaId = HalaqaId;
             student.TotalMemorizedPages = TotalMemorizedPages;
+            student.Gender = gender;
 
             await _context.SaveChangesAsync();
 
@@ -347,7 +349,8 @@ namespace ElMaherQuranSchool.Controllers
         public async Task<IActionResult> Teachers()
         {
             var teachers = await _context.Teachers
-                .OrderBy(t => t.CreatedAt)
+                .OrderBy(t => t.SortOrder)
+                .ThenBy(t => t.Name)
                 .ToListAsync();
             return View(teachers);
         }
@@ -359,7 +362,7 @@ namespace ElMaherQuranSchool.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddTeacher(string Name, string PhoneNumber, string Description, string Role)
+        public async Task<IActionResult> AddTeacher(string Name, string PhoneNumber, string Description, string Role, int SortOrder)
         {
             if (string.IsNullOrWhiteSpace(Name))
             {
@@ -372,7 +375,8 @@ namespace ElMaherQuranSchool.Controllers
                 Name = Name,
                 PhoneNumber = PhoneNumber ?? string.Empty,
                 Description = Description ?? string.Empty,
-                Role = Role
+                Role = Role,
+                SortOrder = SortOrder
             };
 
             _context.Teachers.Add(teacher);
@@ -390,7 +394,7 @@ namespace ElMaherQuranSchool.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditTeacher(int id, string Name, string PhoneNumber, string Description, string Role)
+        public async Task<IActionResult> EditTeacher(int id, string Name, string PhoneNumber, string Description, string Role, int SortOrder)
         {
             var teacher = await _context.Teachers.FindAsync(id);
             if (teacher == null) return NotFound();
@@ -405,6 +409,7 @@ namespace ElMaherQuranSchool.Controllers
             teacher.PhoneNumber = PhoneNumber ?? string.Empty;
             teacher.Description = Description ?? string.Empty;
             teacher.Role = Role;
+            teacher.SortOrder = SortOrder;
             teacher.UpdatedAt = DateTime.UtcNow;
 
             await _context.SaveChangesAsync();

@@ -16,6 +16,18 @@
         </div>
 
         <div style="margin-bottom: 20px;">
+            <label class="form-label">النوع</label>
+            <div style="display:flex; gap:20px; align-items:center;">
+                <label style="cursor:pointer; display:flex; align-items:center; gap:5px;">
+                    <input type="radio" name="gender" value="Male" checked /> ذكر (طالب)
+                </label>
+                <label style="cursor:pointer; display:flex; align-items:center; gap:5px;">
+                    <input type="radio" name="gender" value="Female" /> أنثى (طالبة)
+                </label>
+            </div>
+        </div>
+
+        <div style="margin-bottom: 20px;">
             <label class="form-label" for="profileImage">صورة الطالب (اختياري)</label>
             <input type="file" class="form-control" id="profileImage" name="profileImage" accept="image/*" />
         </div>

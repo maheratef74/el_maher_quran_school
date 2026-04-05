@@ -3,6 +3,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ElMaherQuranSchool.Models
 {
+    public enum Gender { Male, Female }
+
     public class Student
     {
         public int Id { get; set; }
@@ -17,6 +19,8 @@ namespace ElMaherQuranSchool.Models
 
         [StringLength(20)]
         public string ParentPhone { get; set; } = string.Empty;
+
+        public Gender Gender { get; set; } = Gender.Male;
 
         public int TotalMemorizedPages { get; set; } = 0;
         public int PointProgress { get; set; } = 0;
