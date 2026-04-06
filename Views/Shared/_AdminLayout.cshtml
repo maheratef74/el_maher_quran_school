@@ -144,8 +144,8 @@
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js').then(reg => {
-                    console.log('Admin ServiceWorker registered');
+                navigator.serviceWorker.register('/sw-admin.js', { scope: '/Dashboard/' }).then(reg => {
+                    console.log('Admin ServiceWorker registered with scope: /Dashboard/');
                 }).catch(err => {
                     console.error('Admin ServiceWorker registration failed', err);
                 });
